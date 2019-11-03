@@ -1,0 +1,6 @@
+{
+  "urls":[
+    "https://www.csd.uoc.gr/CSD/index.jsp?content=time_schedule&lang=gr"
+  ],
+  "output": "candidates/time_schedule.json"
+}
