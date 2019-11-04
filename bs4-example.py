@@ -19,12 +19,10 @@ import requests
 
 # config read
 
-mode = "people"
-
 with open(sys.argv[1]) as json_data_file:
     config = json.load(json_data_file)
 
-
+mode = config['mode']
 
 # Webpage connection
 # html = "https://www.csd.uoc.gr/CSD/index.jsp?content=time_schedule&lang=gr"
@@ -48,8 +46,8 @@ for lang in config['url']:
     position = ""
     for el in elements:
       position = el['group-name'].encode('utf-8')
-      print position
-      print el
+      # print position
+      # print el
       for person in el.find_all('div', {"class": "person"}):
         #print position
         item = {} 
@@ -66,7 +64,8 @@ for lang in config['url']:
         item['url'] = '' if pageContainer is None else pageContainer['href'].encode('utf-8') #if pageContainer != null # todo add prefix in case or index.jsp leading
         if(item['url'].startswith('index')):
           item['url'] = prefix + item['url']
-        item['email'] = person.find('div', {'class': "person_email_container"}).find_all('span')[0].getText().encode('utf-8')
+        emailDiv = person.find('div', {'class': "person_email_container"})
+        item['email'] = '' if emailDiv is None else emailDiv.find_all('span')[0].getText().encode('utf-8')
         try:
           # index = map(operator.attrgetter('id'), my_list).index('specific_id')
           index = [ x['personId'] for x in retdata ].index(item['personId'])
@@ -78,7 +77,7 @@ for lang in config['url']:
         else:
           retdata.append(item)
 
-  if mode == "courses":
+  if mode == "schedule":
     table = soup.find('table', id = 'schedule_table')
     # rows = table.findAll('tr')
 
@@ -86,7 +85,7 @@ for lang in config['url']:
     headers_list = [item.getText('th').encode('utf-8') for item in rows[0].find_all('th')]#.pop(0)
     headers_list.pop(0)
     # remove first item
-    print json.dumps(headers_list, sort_keys=True, indent=4, ensure_ascii=False)
+    # print json.dumps(headers_list, sort_keys=True, indent=4, ensure_ascii=False)
 
     for row in rows:
       idx = 0
