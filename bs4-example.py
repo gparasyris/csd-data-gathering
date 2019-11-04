@@ -128,4 +128,4 @@ for lang in config['url']:
 
 
 with open(outputFile, 'w') as f:
-    json.dump(retdata, f, indent=4, ensure_ascii=False)
+    json.dump(retdata, f, indent=4, ensure_ascii=False, sort_keys=True)
