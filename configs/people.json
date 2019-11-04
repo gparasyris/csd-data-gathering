@@ -1,6 +1,8 @@
 {
-  "urls":[
-    "https://www.csd.uoc.gr/index.jsp?content=academic_staff&lang=en"
-  ],
+  "type": "academic_staff",
+  "url": {
+    "en": "https://www.csd.uoc.gr/index.jsp?content=academic_staff&lang=en",
+    "gr": "https://www.csd.uoc.gr/index.jsp?content=academic_staff&lang=gr"
+  },
   "output": "candidates/people.json"
 }
