@@ -1,0 +1,6 @@
+{
+  "urls":[
+    "https://www.csd.uoc.gr/index.jsp?content=academic_staff&lang=en"
+  ],
+  "output": "candidates/people.json"
+}
