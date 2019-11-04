@@ -1,8 +1,8 @@
 {
   "type": "academic_staff",
   "url": {
-    "en": "https://www.csd.uoc.gr/index.jsp?content=academic_staff&lang=en",
-    "gr": "https://www.csd.uoc.gr/index.jsp?content=academic_staff&lang=gr"
+    "en": "https://www.csd.uoc.gr/index.jsp?content=visiting_professors&lang=en",
+    "gr": "https://www.csd.uoc.gr/index.jsp?content=visiting_professors&lang=gr"
   },
-  "output": "candidates/people.json"
+  "output": "candidates/visiting_professors.json"
 }

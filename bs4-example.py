@@ -51,7 +51,7 @@ for lang in config['url']:
       print position
       print el
       for person in el.find_all('div', {"class": "person"}):
-        print position
+        #print position
         item = {} 
         # todo add type
         item['_'.join(['position', lang])] = position
