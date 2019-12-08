@@ -131,6 +131,51 @@ for lang in config['url']:
   if mode == "contacts":
     elements = soup.find_all('div', {"class": "contact_department_container"})
     print elements
+  if mode == "model_program":
+    table = soup.find_all('div', id ="currentcontent")
+    semesters = []
+    for tab in table:
+      temp = tab
+      matrices = []
+      for t in temp.find_all("table", {"class": "matrix"}):
+        matrices.append(t)
+        t.extract()
+      # print temp
+      titleArray = temp.find_all('strong')
+      # for t in titleArray:
+      #   print t.getText('td').encode('utf-8').strip()
+      if len(matrices) == len(titleArray):
+        for i in range(len(matrices)):
+            item = {} 
+            semesterTitle = titleArray[i].getText().encode('utf-8').strip()
+            item[u'_'.join(['title', lang])] = semesterTitle
+            item[u'_'.join(['courses', lang])] = []
+            headers = []
+            rows = matrices[i].find_all("tr")
+            for r in range(len(rows) - 1):
+              course = {}
+              tds = rows[r].find_all("td")
+              for td in range(len(tds)):
+                # textValue = u''.join(tds[td].getText().encode('utf-8').strip())
+                textValue = tds[td].getText().encode('utf-8').strip() #.replace("\xce\x95", "E").replace("\xce\x99", "I").replace("NULL ", "").strip()
+                if(r == 0):
+                  headers.append(textValue)
+                else:
+                  course[headers[td]] = textValue
+              if(r > 0):
+                item[u'_'.join(['courses', lang])].append(course)
+            # semesters.append(item)
+            # index = map(operator.attrgetter('id'), my_list).index('specific_id')
+            if((len(semesters) == len(matrices))):
+              for key in item:
+                semesters[index][key] = item[key]
+            else:
+              semesters.append(item)
+        retdata = semesters  
+
+
+              
+            # print item
 
 
 # check if file exists, read it 
