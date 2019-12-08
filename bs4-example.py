@@ -128,6 +128,10 @@ for lang in config['url']:
       #append 
       retdata.append(item)
 
+  if mode == "contacts":
+    elements = soup.find_all('div', {"class": "contact_department_container"})
+    print elements
+
 
 # check if file exists, read it 
 if os.path.isfile(outputFile) and os.stat(outputFile).st_size != 0:
