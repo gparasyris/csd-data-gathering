@@ -133,7 +133,6 @@ for lang in config['url']:
     print elements
   if mode == "model_program":
     table = soup.find_all('div', id ="currentcontent")
-    semesters = []
     for tab in table:
       temp = tab
       matrices = []
@@ -141,13 +140,17 @@ for lang in config['url']:
         matrices.append(t)
         t.extract()
       # print temp
-      titleArray = temp.find_all('strong')
+      # TODO FIX NULL
+      titleArray = res = [i for i in temp.find_all('strong') if i.getText().encode('utf-8').strip() != 'NULL']
+      # print len(titleArray)
+      # print titleArray
       # for t in titleArray:
       #   print t.getText('td').encode('utf-8').strip()
       if len(matrices) == len(titleArray):
         for i in range(len(matrices)):
             item = {} 
             semesterTitle = titleArray[i].getText().encode('utf-8').strip()
+            # print semesterTitle
             item[u'_'.join(['title', lang])] = semesterTitle
             item[u'_'.join(['courses', lang])] = []
             headers = []
@@ -157,7 +160,7 @@ for lang in config['url']:
               tds = rows[r].find_all("td")
               for td in range(len(tds)):
                 # textValue = u''.join(tds[td].getText().encode('utf-8').strip())
-                textValue = tds[td].getText().encode('utf-8').strip() #.replace("\xce\x95", "E").replace("\xce\x99", "I").replace("NULL ", "").strip()
+                textValue = tds[td].getText().encode('utf-8').replace("\xce\x95", "E").replace("\xce\x99", "I").replace("NULL ", "").strip()
                 if(r == 0):
                   headers.append(textValue)
                 else:
@@ -166,12 +169,13 @@ for lang in config['url']:
                 item[u'_'.join(['courses', lang])].append(course)
             # semesters.append(item)
             # index = map(operator.attrgetter('id'), my_list).index('specific_id')
-            if((len(semesters) == len(matrices))):
+            if(len(retdata) == len(matrices)):
+              print 'appending'
               for key in item:
-                semesters[index][key] = item[key]
+                retdata[i][key] = item[key]
             else:
-              semesters.append(item)
-        retdata = semesters  
+              retdata.append(item)
+        # retdata = semesters  
 
 
               
