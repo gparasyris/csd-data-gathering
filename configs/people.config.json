@@ -5,5 +5,5 @@
     "en": "https://www.csd.uoc.gr/index.jsp?content=visiting_professors&lang=en",
     "gr": "https://www.csd.uoc.gr/index.jsp?content=visiting_professors&lang=gr"
   },
-  "output": "candidates/visiting_professors.json"
+  "output": "candidates/people.json"
 }

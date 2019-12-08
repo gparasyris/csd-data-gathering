@@ -1,4 +1,7 @@
+# -*- coding: utf-8 -*-
 import os, sys
+import io
+
 
 bspath = os.path.join(os.path.dirname(os.path.abspath(__file__)),"libraries/backports.functools_lru_cache-1.6.1")
 sys.path.append(bspath)
@@ -43,18 +46,18 @@ for lang in config['url']:
   if mode == "people":
     prefix = 'http://www.csd.uoc.gr/CSD/'
     elements = soup.find_all('div', {"class": "position-group"})
-    position = ""
+    print len(elements)
     for el in elements:
-      position = el['group-name'].encode('utf-8')
-      # print position
+      position = "".join(el['group-name'].encode('utf-8'))
+      print el['group-name']
       # print el
       for person in el.find_all('div', {"class": "person"}):
-        #print position
+        print ">>>> " + position
         item = {} 
         # todo add type
         item['_'.join(['position', lang])] = position
         item['_'.join(['name', lang])] = person.find('div', {"class": "small_title"}).getText().encode('utf-8').split('-')[0].strip()
-        position = ''
+        # position = ''
         item['personId'] = person['people_id'].encode('utf-8')
         description = ''
         item['_'.join(['description', lang])] = person.find('div', {"class": "person_text"}).getText().encode('utf-8').strip()
@@ -126,5 +129,13 @@ for lang in config['url']:
       retdata.append(item)
 
 
+# check if file exists, read it 
+if os.path.isfile(outputFile) and os.stat(outputFile).st_size != 0:
+  with io.open(outputFile, encoding='utf-8') as json_file:
+    olddata = json.load(json_file)
+    retdata = retdata + olddata
+    # for v in olddata:
+    #   retdata.append(v)
+ 
 with open(outputFile, 'w') as f:
     json.dump(retdata, f, indent=4, ensure_ascii=False, sort_keys=True)
