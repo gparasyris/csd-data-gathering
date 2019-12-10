@@ -27,6 +27,37 @@ sys.path.append(bspath)
 def get_param_from_url(url, param_name):
     return [i.split("=")[-1] for i in url.split("?", 1)[-1].split("&") if i.startswith(param_name + "=")][0]
 
+
+
+def json_load_byteified(file_handle):
+    return _byteify(
+        json.load(file_handle, object_hook=_byteify),
+        ignore_dicts=True
+    )
+
+def json_loads_byteified(json_text):
+    return _byteify(
+        json.loads(json_text, object_hook=_byteify),
+        ignore_dicts=True
+    )
+
+def _byteify(data, ignore_dicts = False):
+    # if this is a unicode string, return its string representation
+    if isinstance(data, unicode):
+        return data.encode('utf-8')
+    # if this is a list of values, return list of byteified values
+    if isinstance(data, list):
+        return [ _byteify(item, ignore_dicts=True) for item in data ]
+    # if this is a dictionary, return dictionary of byteified keys and values
+    # but only if we haven't already byteified it
+    if isinstance(data, dict) and not ignore_dicts:
+        return {
+            _byteify(key, ignore_dicts=True): _byteify(value, ignore_dicts=True)
+            for key, value in data.iteritems()
+        }
+    # if it's anything else, return it in its original form
+    return data
+
 # config read
 
 with open(sys.argv[1]) as json_data_file:
@@ -38,6 +69,7 @@ mode = config['mode']
 # html = "https://www.csd.uoc.gr/CSD/index.jsp?content=time_schedule&lang=gr"
 outputFile = config['output']
 retdata = []
+firstDone = False
 for lang in config['url']:
     print '******* ---- ' + lang
     # foreach lang
@@ -145,9 +177,113 @@ for lang in config['url']:
             retdata.append(item)
 
     if mode == "contacts":
-        elements = soup.find_all(
-            'div', {"class": "contact_department_container"})
-        print elements
+      canAdd = False
+      # at, phone, fax, facebook, link
+      atRegex = re.compile('.*at-icon.*')
+      phoneRegex = re.compile('.*phone-icon.*')
+      faxRegex = re.compile('.*fax-icon.*')
+      facebookRegex = re.compile('.*facebook-icon.*')
+      linkRegex = re.compile('.*link-icon.*')
+      social = [ ]
+      email = { }
+      phone = { }
+      fax = { } 
+      link = { }
+      create_real_email_spans = soup.find_all('span', {"class": "create_real_email"})
+      for each in create_real_email_spans:
+        each.extract()
+      elements = soup.find_all('div', {"class": "contact_department_container"})
+      itemsAdded = 0
+      for el in elements:
+        item = { }
+        divs = el.find_all('div',recursive=False)
+        for i in range(len(divs)):
+          # label = ''
+          # try:
+          if divs[i].has_attr("class") and divs[i]['class'] == ['input_label']:
+            label = divs[i].getText().encode('utf-8').strip() 
+          else:
+            img = divs[i].find('img')
+            print img
+            if img is not None:
+              # print img
+              if atRegex.match(img['src']):
+                #email['title'] = img['title'].encode('raw_unicode_escape').decode('utf-8').strip()#.encode('utf-8').strip()
+                email['title'] = img['title'].encode('utf8').strip() #.decode('latin1').strip()
+                email['value'] = divs[i].getText().encode('utf-8').strip()
+                item[u'_'.join(['email', lang])] = email
+                # print item
+              elif phoneRegex.match(img['src']):
+                phone['title'] = img['title'].encode('utf-8').strip()
+                phone['value'] = divs[i].getText().encode('utf-8').strip()
+                item[u'_'.join(['phone', lang])] = phone
+              elif faxRegex.match(img['src']):
+                fax['title'] = img['title'].encode('utf-8').strip()
+                fax['value'] = divs[i].getText().encode('utf-8').strip()
+                item[u'_'.join(['fax', lang])] = fax
+              elif linkRegex.match(img['src']):
+                link['title'] = img['title'].encode('utf-8').strip()
+                link['value'] = divs[i].find('a')["href"].encode('utf-8').strip()
+                item[u'_'.join(['link', lang])] = link
+              elif facebookRegex.match(img['src']):
+                break
+          if divs[i].has_attr("class") and divs[i]['class'] == ['field_separator']: 
+            if canAdd == True:
+              # print item
+              print 'appending...'
+              item[u'_'.join(['label', lang])] = label
+              if(firstDone):
+                for key in item:
+                  retdata[itemsAdded][key] = item[key]
+              else:
+                retdata.append(item)
+              itemsAdded = itemsAdded + 1
+              email = { }
+              phone = { }
+              fax = { } 
+              link = { }
+              item = { }
+              label = ''
+            else:
+              canAdd = True
+            # print item
+          # except KeyError:
+          #   continue
+
+
+
+          # try:
+          #   if divs[i]['class'] == ['field_separator']: 
+          #     i += 1
+          #     if divs[i]['class'] == ['input_label']:
+          #       if divs[i].getText() == "Social Networks" or divs[i].getText() == "Μέσα Κοινωνικής Δικτύωσης":
+          #         break
+          #       item["label"] = divs[i].getText().encode('utf-8').strip() 
+          #       i += 1
+
+          #     if divs[i].find("img")["title"] == "Secretariat's page":
+          #       item["link"] ={}
+          #       item["link"]["name"] = divs[i].getText().encode('utf-8').strip()
+          #       item["link"]["url"] = divs[i].find('a')["href"].encode('utf-8').strip()
+          #       i += 1
+
+          #     if divs[i].find("img")["title"] == "Telephone":
+          #       item["telephone"] = divs[i].getText().encode('utf-8').strip()
+          #       i += 1
+
+          #     if divs[i].find("img")["title"] == "Fax":
+          #       item["fax"] = divs[i].getText().encode('utf-8').strip()
+          #       i += 1
+
+          #     emailElement = divs[i].find("img")
+          #     if emailElement and emailElement["title"] == "Email address": 
+          #       item["email"]= divs[i].find("span").getText().encode('utf-8').strip()
+          #       i += 1
+          #     retdata.append(item)
+          # except KeyError:
+          #   continue
+      print retdata
+    
     if mode == "model_program":
         table = soup.find_all('div', id="currentcontent")
         for tab in table:
@@ -290,16 +426,37 @@ for lang in config['url']:
 
                                 paragraphs = divs[i].find_all('p')
                                 candValues = []
-                                if len(paragraphs)  > 0:
+                                single = {}
+                                item[prefix] = []
+                                if (len(paragraphs)  == 2):
                                   for ci in range(len(paragraphs)):
+                                    print 'paragraph*********'
+                                    print paragraphs[ci].getText().encode('utf-8').strip()
+                                    ciArray = re.split(': |\n',paragraphs[ci].getText().encode('utf-8').strip())
+                                    single['label'] = headersMap[ciArray[0]] #if ciArray[0] in headersMap else ''
+                                    single['value'] = ciArray[1]
+                                    item[prefix].append(single)
+                                    single = {}
                                     # print '%%%'
-                                    for element in re.split(': |\n',paragraphs[ci].getText().encode('utf-8').strip()):
-                                      candValues.append(element)
+                                    # for element in re.split(': |\n',paragraphs[ci].getText().encode('utf-8').strip()):
+                                      # candValues.append(element)
                                     # candValues = candValues + re.split(': |\n',paragraphs[ci].getText().encode('utf-8').strip())
                                     # print candValues
                                     # print '%%%'
                                 else:
                                   candValues = re.split(': |\n',divs[i].getText().encode('utf-8').strip())
+                                  if(len(candValues) > 1):
+                                    for si in range(len(candValues) - 1):
+                                      single['label'] = headersMap[candValues[si]] if candValues[si] in headersMap else ''
+                                      single['value'] = candValues[si+1]
+                                      item[prefix].append(single)
+                                      single = {}
+                                      si = si +1
+                                  else:
+                                    single['label'] = ''
+                                    single['value'] = candValues[0]
+                                    item[prefix].append(single)
+                                    single = {}
                                 # print '***'
                                 # print divs[i].find_all('p')
                                 # print prefix
@@ -307,42 +464,42 @@ for lang in config['url']:
                                 # print len(candValues)
                                 # print len(paragraphs)
                                 # print '***'
-                                item[prefix] = []
-                                single ={}
-                                for si in range(len(candValues)):
-                                  # print '***'
-                                  # print len(candValues[si])
-                                  # print si
-                                  if(si == 0 and len(candValues) == 1):
-                                    single['label'] = ''
-                                    single['value'] = candValues[si]
-                                    item[prefix].append(single)
-                                    secondaryKey = ''
-                                    # print '###'
-                                    # print single
-                                  else:
-                                    # print 'vvv'
-                                    # print secondaryKey
-                                    # print candValues[si]
-                                    # print (secondaryKey in headersMap)
-                                    # print '^^^'
-                                    if secondaryKey == '':
-                                      if candValues[si] in headersMap:
-                                        secondaryKey = candValues[si]
-                                      # print secondaryKey
-                                    elif secondaryKey in headersMap:
-                                      # single[headersMap[secondaryKey]] = candValues[si]
+                                # item[prefix] = []
+                                # single ={}
+                                # for si in range(len(candValues)):
+                                #   # print '***'
+                                #   # print len(candValues[si])
+                                #   # print si
+                                #   if(si == 0 and len(candValues) == 1):
+                                #     single['label'] = ''
+                                #     single['value'] = candValues[si]
+                                #     item[prefix].append(single)
+                                #     secondaryKey = ''
+                                #     # print '###'
+                                #     # print single
+                                #   else:
+                                #     # print 'vvv'
+                                #     # print secondaryKey
+                                #     # print candValues[si]
+                                #     # print (secondaryKey in headersMap)
+                                #     # print '^^^'
+                                #     if secondaryKey == '':
+                                #       if candValues[si] in headersMap:
+                                #         secondaryKey = candValues[si]
+                                #       # print secondaryKey
+                                #     elif secondaryKey in headersMap:
+                                #       # single[headersMap[secondaryKey]] = candValues[si]
                                       
-                                      single['label'] = headersMap[secondaryKey]
-                                      single['value'] = candValues[si]
-                                      item[prefix].append(single)
-                                      print '###'
-                                      print secondaryKey
-                                      print headersMap[secondaryKey]
-                                      print candValues[si]
-                                      print single
-                                      print '###'
-                                      secondaryKey = ''
+                                #       single['label'] = headersMap[secondaryKey]
+                                #       single['value'] = candValues[si]
+                                #       item[prefix].append(single)
+                                #       print '###'
+                                #       print secondaryKey
+                                #       print headersMap[secondaryKey]
+                                #       print candValues[si]
+                                #       print single
+                                #       print '###'
+                                #       secondaryKey = ''
                                       # print '>>>'
                                       # print single
                                   # if single:
@@ -377,6 +534,7 @@ for lang in config['url']:
             # print retdata
             # if(tds[1] is not None):
 
+    firstDone = True
     # html = config['url'][lang]
     # r=requests.get(html)``
     # c=r.content.decode('utf-8').replace("&nbsp;", " NULL ").replace("\\u00A0", #
@@ -386,11 +544,18 @@ for lang in config['url']:
 
 # check if file exists, read it
 if os.path.isfile(outputFile) and os.stat(outputFile).st_size != 0:
-    with io.open(outputFile, encoding='utf-8') as json_file:
-        olddata = json.load(json_file)
-        retdata = retdata + olddata
-        # for v in olddata:
-        #   retdata.append(v)
+    # with open(outputFile) as json_file:
+    # with open(outputFile, "rb") as json_file:
+        # contents = json_file.read().decode("UTF-8")
+        # olddata = json.load(json_file, encoding = "utf-8")
+        # retdata = retdata + olddata
+    olddata = json_load_byteified(open(outputFile))
+    retdata = retdata + olddata
 
 with open(outputFile, 'w') as f:
+# with io.open(outputFile, 'w', encoding='utf-8') as f:
+    # data = json.dumps(retdata, indent=4,   sort_keys=True, ensure_ascii=False)
+    # unicode(data) auto-decodes data to unicode if str
+    # f.write(unicode(data))
+    # json.dump(unicode(retdata), f, indent=4, ensure_ascii=False, sort_keys=True)
     json.dump(retdata, f, indent=4, ensure_ascii=False, sort_keys=True)

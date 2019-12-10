@@ -2,7 +2,9 @@
   "type": "contacts",
   "mode": "contacts",
   "url": {
-    "en": "https://www.csd.uoc.gr/CSD/index.jsp?content=contact_and_location&lang=en"
+    "en": "https://www.csd.uoc.gr/CSD/index.jsp?content=contact_and_location&lang=en",
+    "gr": "https://www.csd.uoc.gr/CSD/index.jsp?content=contact_and_location&lang=gr"
+
   },
   "output": "candidates/contacts.json"
 }
