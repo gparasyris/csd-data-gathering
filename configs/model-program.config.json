@@ -1,9 +1,10 @@
 {
-  "type": "model_program",
-  "mode": "model_program",
+  "type": "model-program",
+  "mode": "model-program",
   "url": {
     "en": "https://www.csd.uoc.gr/CSD/index.jsp?content=model_program&openmenu=demoAcc3&lang=en",
     "gr": "https://www.csd.uoc.gr/CSD/index.jsp?content=model_program&openmenu=demoAcc3&lang=gr"
   },
-  "output": "candidates/model-program.json"
+  "output": "candidates/model-program.json",
+  "outputFileName": "model-program.json"
 }

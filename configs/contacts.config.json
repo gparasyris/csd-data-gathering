@@ -6,5 +6,6 @@
     "gr": "https://www.csd.uoc.gr/CSD/index.jsp?content=contact_and_location&lang=gr"
 
   },
-  "output": "candidates/contacts.json"
+  "output": "candidates/contacts.json",
+  "outputFileName": "contacts.json"
 }

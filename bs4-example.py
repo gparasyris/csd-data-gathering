@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import requests
 from bs4 import BeautifulSoup
+from data_diff import  Diff
 import codecs
 import json
 import soupsieve
@@ -10,7 +11,6 @@ import os
 import sys
 import io
 import re
-
 
 bspath = os.path.join(os.path.dirname(os.path.abspath(
     __file__)), "libraries/backports.functools_lru_cache-1.6.1")
@@ -71,7 +71,7 @@ outputFile = config['output']
 retdata = []
 firstDone = False
 for lang in config['url']:
-    print '******* ---- ' + lang
+    print('******* ---- ' + lang)
     # foreach lang
     html = config['url'][lang]
     r = requests.get(html)
@@ -85,13 +85,13 @@ for lang in config['url']:
     if mode == "people":
         prefix = 'http://www.csd.uoc.gr/CSD/'
         elements = soup.find_all('div', {"class": "position-group"})
-        print len(elements)
+        print(len(elements))
         for el in elements:
             position = "".join(el['group-name'].encode('utf-8'))
-            print el['group-name']
+            print( el['group-name'])
             # print el
             for person in el.find_all('div', {"class": "person"}):
-                print ">>>> " + position
+                print( ">>>> " + position)
                 item = {}
                 # todo add type
                 item['_'.join(['position', lang])] = position
@@ -204,7 +204,7 @@ for lang in config['url']:
             label = divs[i].getText().encode('utf-8').strip() 
           else:
             img = divs[i].find('img')
-            print img
+            print( img)
             if img is not None:
               # print img
               if atRegex.match(img['src']):
@@ -230,7 +230,7 @@ for lang in config['url']:
           if divs[i].has_attr("class") and divs[i]['class'] == ['field_separator']: 
             if canAdd == True:
               # print item
-              print 'appending...'
+              print( 'appending...')
               item[u'_'.join(['label', lang])] = label
               if(firstDone):
                 for key in item:
@@ -282,7 +282,7 @@ for lang in config['url']:
           #     retdata.append(item)
           # except KeyError:
           #   continue
-      print retdata
+      print( retdata)
     
     if mode == "model_program":
         table = soup.find_all('div', id="currentcontent")
@@ -326,7 +326,7 @@ for lang in config['url']:
                     # semesters.append(item)
                     # index = map(operator.attrgetter('id'), my_list).index('specific_id')
                     if(len(retdata) == len(matrices)):
-                        print 'appending'
+                        print( 'appending')
                         for key in item:
                             retdata[i][key] = item[key]
                     else:
@@ -430,8 +430,8 @@ for lang in config['url']:
                                 item[prefix] = []
                                 if (len(paragraphs)  == 2):
                                   for ci in range(len(paragraphs)):
-                                    print 'paragraph*********'
-                                    print paragraphs[ci].getText().encode('utf-8').strip()
+                                    print( 'paragraph*********')
+                                    print( paragraphs[ci].getText().encode('utf-8').strip())
                                     ciArray = re.split(': |\n',paragraphs[ci].getText().encode('utf-8').strip())
                                     single['label'] = headersMap[ciArray[0]] #if ciArray[0] in headersMap else ''
                                     single['value'] = ciArray[1]
@@ -512,7 +512,7 @@ for lang in config['url']:
 
                             # item[prevKey] = divs[i].getText().encode('utf-8').strip()
                             prevKey = ''
-                print item
+                print( item)
                 index = 0
                 try:
                     # index = map(operator.attrgetter('id'), my_list).index('specific_id')
