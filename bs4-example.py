@@ -82,6 +82,7 @@ for lang in config['url']:
     # todo all lines should call another function that try catches and returns
     # fail value
 
+# academic_staff works
     if mode == "people":
         prefix = 'http://www.csd.uoc.gr/CSD/'
         elements = soup.find_all('div', {"class": "position-group"})
@@ -126,6 +127,7 @@ for lang in config['url']:
                 else:
                     retdata.append(item)
 
+# seems ok
     if mode == "schedule":
         table = soup.find('table', id='schedule_table')
         # rows = table.findAll('tr')
@@ -176,6 +178,7 @@ for lang in config['url']:
             # append
             retdata.append(item)
 
+# works
     if mode == "contacts":
       canAdd = False
       # at, phone, fax, facebook, link

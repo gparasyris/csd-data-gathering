@@ -41,7 +41,6 @@ bspath = os.path.join(os.path.dirname(
 sys.path.append(bspath)
 
 # DEFAULTS
-
 DEFAULT_VERSION_PATH = 'releases/versions.json'
 DEFAULT_CANDIDATE_PATH = 'candidates/'
 DEFAULT_RELEASE_PATH = 'releases/'
@@ -85,40 +84,33 @@ print(versions)
 #       --> copy file in releases/
 #       --> increase versioning for module
 #
-# uuid.uuid4()
 
 configs = os.listdir(DEFAULT_CONFIG_PATH)
 newKeys = {}
 for config in configs:
     configOptions = json_load_byteified(open(DEFAULT_CONFIG_PATH + config))
-    # print versions.modules[configOptions.mode]
     moduleName = configOptions['mode']
     sourceFile = DEFAULT_CANDIDATE_PATH + configOptions['mode'] + '.json'
     print(sourceFile)
     if shouldUpdateRelease(DEFAULT_CANDIDATE_PATH + configOptions['outputFileName'], DEFAULT_RELEASE_PATH + configOptions['outputFileName']):
         currentVersion = None
         try:
-            currentVersion = increment_ver(versions['modules'][configOptions['mode']])
+            currentVersion = increment_ver(
+                versions['modules'][configOptions['mode']])
         except (AttributeError, KeyError):
             currentVersion = "0.0.1"
-            # return True
-            # print(increment_ver(None))
-        # currentVersion = str(uuid.uuid4())
-        # print configOptions
         if os.path.isfile(sourceFile) and os.stat(sourceFile).st_size != 0:
             print('copying...')
             shutil.move(os.path.join(sourceFile),
                         os.path.join(DEFAULT_RELEASE_PATH + configOptions['mode'] + '.json'))
-            # versions['modules'][configOptions['mode']] = currentVersion
-            # print versions
             newKeys[moduleName] = currentVersion
-        # print versions
     else:
         print(configOptions['outputFileName'])
 
 if(len(newKeys.keys()) > 0):
-    print versions
-    versions['_v'] = '0.0.1' if '_v' not in versions else  increment_ver(versions['_v'])
+    print(versions)
+    versions['_v'] = '0.0.1' if '_v' not in versions else increment_ver(
+        versions['_v'])
     for key in newKeys:
         versions['modules'][key] = newKeys[key]
 
