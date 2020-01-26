@@ -59,7 +59,7 @@ def _byteify(data, ignore_dicts = False):
     return data
 
 def handlePerson(retdata, position, person, prefix, lang):
-    print( ">>>> " + position)
+    # print( ">>>> " + position)
     item = {}
     # todo add type
     item['_'.join(['position', lang])] = position
@@ -76,7 +76,7 @@ def handlePerson(retdata, position, person, prefix, lang):
     # url = ''
     pageContainer = person.find(
         'div', {"class": "person_contact"}).find('a')
-    # print
+    # # print
     item['url'] = '' if pageContainer is None else pageContainer['href'].encode(
         'utf-8')  # if pageContainer != null # todo add prefix in case or index.jsp leading
     if(item['url'].startswith('index')):
@@ -122,7 +122,7 @@ def crawlModule(configPath):
 	retdata = []
 	firstDone = False
 	for lang in config['url']:
-			print('******* ---- ' + lang)
+			# print('******* ---- ' + lang)
 			# foreach lang
 			html = config['url'][lang]
 			r = requests.get(html)
@@ -147,14 +147,14 @@ def crawlModule(configPath):
 									handlePerson(retdata, position, person, prefix, lang)
 					elif mode == "position-group":
 							elements = soup.find_all('div', {"class": "position-group"})
-							print(len(elements))
+							# print(len(elements))
 							for el in elements:
 									position = "".join(el['group-name'].encode('utf-8'))
-									print( el['group-name'])
-									# print el
+									# print( el['group-name'])
+									# # print el
 									for person in el.find_all('div', {"class": "person"}):
 											handlePerson(retdata, position, person, prefix, lang)
-									# print( ">>>> " + position)
+									# # print( ">>>> " + position)
 									# item = {}
 									# # todo add type
 									# item['_'.join(['position', lang])] = position
@@ -168,7 +168,7 @@ def crawlModule(configPath):
 									# # url = ''
 									# pageContainer = person.find(
 									#     'div', {"class": "person_contact"}).find('a')
-									# # print
+									# # # print
 									# item['url'] = '' if pageContainer is None else pageContainer['href'].encode(
 									#     'utf-8')  # if pageContainer != null # todo add prefix in case or index.jsp leading
 									# if(item['url'].startswith('index')):
@@ -199,7 +199,7 @@ def crawlModule(configPath):
 													for item in rows[0].find_all('th')]  # .pop(0)
 					headers_list.pop(0)
 					# remove first item
-					# print json.dumps(headers_list, sort_keys=True, indent=4, ensure_ascii=False)
+					# # print json.dumps(headers_list, sort_keys=True, indent=4, ensure_ascii=False)
 
 					for row in rows:
 							idx = 0
@@ -209,11 +209,11 @@ def crawlModule(configPath):
 							schedule = {}
 							title = ''
 							for td in row.find_all('td'):
-									# print idx
+									# # print idx
 									if idx == 0:
 											# [item['title'].encode('utf-8') for item in td.find_all('a')]
 											title = td.find('a')['title'].encode('utf-8').strip()
-											# print json.dumps(title, sort_keys=True, indent=4, ensure_ascii=False)
+											# # print json.dumps(title, sort_keys=True, indent=4, ensure_ascii=False)
 									else:
 											item['schedule'] = []
 											day = ''
@@ -269,15 +269,15 @@ def crawlModule(configPath):
 							label = divs[i].getText().encode('utf-8').strip() 
 						else:
 							img = divs[i].find('img')
-							print( img)
+							# print( img)
 							if img is not None:
-								# print img
+								# # print img
 								if atRegex.match(img['src']):
 									#email['title'] = img['title'].encode('raw_unicode_escape').decode('utf-8').strip()#.encode('utf-8').strip()
 									email['title'] = img['title'].encode('utf8').strip() #.decode('latin1').strip()
 									email['value'] = divs[i].getText().encode('utf-8').strip()
 									item[u'_'.join(['email', lang])] = email
-									# print item
+									# # print item
 								elif phoneRegex.match(img['src']):
 									phone['title'] = img['title'].encode('utf-8').strip()
 									phone['value'] = divs[i].getText().encode('utf-8').strip()
@@ -294,8 +294,8 @@ def crawlModule(configPath):
 									break
 						if divs[i].has_attr("class") and divs[i]['class'] == ['field_separator']: 
 							if canAdd == True:
-								# print item
-								print( 'appending...')
+								# # print item
+								# print( 'appending...')
 								item[u'_'.join(['label', lang])] = label
 								if(firstDone):
 									for key in item:
@@ -311,7 +311,7 @@ def crawlModule(configPath):
 								label = ''
 							else:
 								canAdd = True
-							# print item
+							# # print item
 						# except KeyError:
 						#   continue
 
@@ -347,7 +347,7 @@ def crawlModule(configPath):
 						#     retdata.append(item)
 						# except KeyError:
 						#   continue
-				print( retdata)
+				# print( retdata)
 
 	# issue is appending to the same one
 			if module == "model-program":
@@ -358,20 +358,20 @@ def crawlModule(configPath):
 							for t in temp.find_all("table", {"class": "matrix"}):
 									matrices.append(t)
 									t.extract()
-							# print temp
+							# # print temp
 							# TODO FIX NULL
 							titleArray = res = [i for i in temp.find_all(
 									'strong') if i.getText().encode('utf-8').strip() != 'NULL']
-							# print len(titleArray)
-							# print titleArray
+							# # print len(titleArray)
+							# # print titleArray
 							# for t in titleArray:
-							#   print t.getText('td').encode('utf-8').strip()
+							#   # print t.getText('td').encode('utf-8').strip()
 							if len(matrices) == len(titleArray):
 									for i in range(len(matrices)):
 											item = {}
 											semesterTitle = titleArray[i].getText().encode(
 													'utf-8').strip()
-											# print semesterTitle
+											# # print semesterTitle
 											item[u'_'.join(['title', lang])] = semesterTitle
 											item[u'_'.join(['courses', lang])] = []
 											headers = []
@@ -392,20 +392,20 @@ def crawlModule(configPath):
 											# semesters.append(item)
 											# index = map(operator.attrgetter('id'), my_list).index('specific_id')
 											if(len(retdata) == len(matrices)):
-													print( 'appending')
+													# print( 'appending')
 													for key in item:
 															retdata[i][key] = item[key]
 											else:
 													retdata.append(item)
 									# retdata = semesters
 
-											# print item
+											# # print item
 	# fails
 			if module == "courses":
 					# soup.find_all('a', {'href': re.compile(r'crummy\.com/')})
 					course_tables = soup.find_all(
 							'tr', {'id': re.compile(r'course[0-9]+')})
-					# print course_tables
+					# # print course_tables
 					headersMap = {}
 					#   "Area": "area_name",
 					#   "Code": "code",
@@ -441,10 +441,10 @@ def crawlModule(configPath):
 					headersMap["εαρινό εξάμηνο"]="spring_semester"
 					# headersMap = json.dumps(headerData)
 					for table in course_tables:
-							# print table
-							# print '------'
+							# # print table
+							# # print '------'
 							a_containers = table.find_all('a')
-							# print a_containers
+							# # print a_containers
 							# for a_container in a_containers:
 							for ci in range(len(a_containers)):
 									course_url = a_containers[ci]['href'].encode('utf-8')
@@ -457,9 +457,9 @@ def crawlModule(configPath):
 										each  .extract()
 									course_details_div = course_soup.find(
 											'div', {'class': 'text_field rel hidden'})
-									# print '---'
-									# print course_details_div
-									# print '---'
+									# # print '---'
+									# # print course_details_div
+									# # print '---'
 									# for el in course_details_div:
 									divs = course_details_div.find_all('div', recursive=False)
 									shouldAddFields = False
@@ -476,19 +476,19 @@ def crawlModule(configPath):
 															prevKey = divs[i].getText().encode('utf-8').strip()
 													elif prevKey != '':
 															# .encode('utf-8').strip()
-															# print prevKey
-															# print headersMap
-															# print (prevKey in headersMap)
-															# print(headersMap[prevKey] is not None)
+															# # print prevKey
+															# # print headersMap
+															# # print (prevKey in headersMap)
+															# # print(headersMap[prevKey] is not None)
 															# hasattr(headersMap, prevKey):
-															# print 'val'
-															# print prevKey
+															# # print 'val'
+															# # print prevKey
 															if prevKey in headersMap:
 																prefix = headersMap[prevKey]
 																if prefix in ["email", "url"]:
 																	# import re
 																	# q = "winter semester:  http://www.csd.uoc.gr/~hy118a/\nspring semester:  http://www.csd.uoc.gr/~hy118b/"
-																	# print(q.split(['\n',': ']))
+																	# # print(q.split(['\n',': ']))
 
 																	paragraphs = divs[i].find_all('p')
 																	candValues = []
@@ -496,19 +496,19 @@ def crawlModule(configPath):
 																	item[prefix] = []
 																	if (len(paragraphs)  == 2):
 																		for ci in range(len(paragraphs)):
-																			print( 'paragraph*********')
-																			print( paragraphs[ci].getText().encode('utf-8').strip())
+																			# print( 'paragraph*********')
+																			# print( paragraphs[ci].getText().encode('utf-8').strip())
 																			ciArray = re.split(': |\n',paragraphs[ci].getText().encode('utf-8').strip())
 																			single['label'] = headersMap[ciArray[0]] #if ciArray[0] in headersMap else ''
 																			single['value'] = ciArray[1]
 																			item[prefix].append(single)
 																			single = {}
-																			# print '%%%'
+																			# # print '%%%'
 																			# for element in re.split(': |\n',paragraphs[ci].getText().encode('utf-8').strip()):
 																				# candValues.append(element)
 																			# candValues = candValues + re.split(': |\n',paragraphs[ci].getText().encode('utf-8').strip())
-																			# print candValues
-																			# print '%%%'
+																			# # print candValues
+																			# # print '%%%'
 																	else:
 																		candValues = re.split(': |\n',divs[i].getText().encode('utf-8').strip())
 																		if(len(candValues) > 1):
@@ -523,54 +523,54 @@ def crawlModule(configPath):
 																			single['value'] = candValues[0]
 																			item[prefix].append(single)
 																			single = {}
-																	# print '***'
-																	# print divs[i].find_all('p')
-																	# print prefix
-																	# print paragraphs
-																	# print len(candValues)
-																	# print len(paragraphs)
-																	# print '***'
+																	# # print '***'
+																	# # print divs[i].find_all('p')
+																	# # print prefix
+																	# # print paragraphs
+																	# # print len(candValues)
+																	# # print len(paragraphs)
+																	# # print '***'
 																	# item[prefix] = []
 																	# single ={}
 																	# for si in range(len(candValues)):
-																	#   # print '***'
-																	#   # print len(candValues[si])
-																	#   # print si
+																	#   # # print '***'
+																	#   # # print len(candValues[si])
+																	#   # # print si
 																	#   if(si == 0 and len(candValues) == 1):
 																	#     single['label'] = ''
 																	#     single['value'] = candValues[si]
 																	#     item[prefix].append(single)
 																	#     secondaryKey = ''
-																	#     # print '###'
-																	#     # print single
+																	#     # # print '###'
+																	#     # # print single
 																	#   else:
-																	#     # print 'vvv'
-																	#     # print secondaryKey
-																	#     # print candValues[si]
-																	#     # print (secondaryKey in headersMap)
-																	#     # print '^^^'
+																	#     # # print 'vvv'
+																	#     # # print secondaryKey
+																	#     # # print candValues[si]
+																	#     # # print (secondaryKey in headersMap)
+																	#     # # print '^^^'
 																	#     if secondaryKey == '':
 																	#       if candValues[si] in headersMap:
 																	#         secondaryKey = candValues[si]
-																	#       # print secondaryKey
+																	#       # # print secondaryKey
 																	#     elif secondaryKey in headersMap:
 																	#       # single[headersMap[secondaryKey]] = candValues[si]
 																				
 																	#       single['label'] = headersMap[secondaryKey]
 																	#       single['value'] = candValues[si]
 																	#       item[prefix].append(single)
-																	#       print '###'
-																	#       print secondaryKey
-																	#       print headersMap[secondaryKey]
-																	#       print candValues[si]
-																	#       print single
-																	#       print '###'
+																	#       # print '###'
+																	#       # print secondaryKey
+																	#       # print headersMap[secondaryKey]
+																	#       # print candValues[si]
+																	#       # print single
+																	#       # print '###'
 																	#       secondaryKey = ''
-																				# print '>>>'
-																				# print single
+																				# # print '>>>'
+																				# # print single
 																		# if single:
 																		#   single ={}
-															# print item
+															# # print item
 																else:
 																  actualKey = prefix if prefix in ["ects"] else '_'.join([prefix, lang])
 																  value = divs[i].getText().encode('utf-8').replace("NULL ", "").replace("\r\n\n", "").replace("\r\n", "").replace("\r\n\t\n", " ").replace("\n", " ").strip()
@@ -578,7 +578,7 @@ def crawlModule(configPath):
 
 															# item[prevKey] = divs[i].getText().encode('utf-8').strip()
 															prevKey = ''
-									print( item)
+									# print( item)
 									index = 0
 									try:
 											# index = map(operator.attrgetter('id'), my_list).index('specific_id')
@@ -597,7 +597,7 @@ def crawlModule(configPath):
 									# else:
 									#     retdata.append(item)
 									# retdata.append(item)
-							# print retdata
+							# # print retdata
 							# if(tds[1] is not None):
 	#works
 			if module == "documents":
