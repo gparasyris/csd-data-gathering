@@ -1,0 +1,9 @@
+{
+  "type": "documents",
+  "module": "documents",
+  "url": {
+    "gr": "https://www.csd.uoc.gr/index.jsp?content=secretariat_services&openmenu=demoAcc5&lang=gr#Entypa"
+  },
+  "output": "candidates/documents.json",
+  "outputFileName": "documents.json"
+}

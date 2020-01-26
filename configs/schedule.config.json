@@ -1,6 +1,6 @@
 {
   "type": "schedule",
-  "mode": "schedule",
+  "module": "schedule",
   "url": {
     "gr": "https://www.csd.uoc.gr/CSD/index.jsp?content=time_schedule&lang=gr"
   },

@@ -58,12 +58,63 @@ def _byteify(data, ignore_dicts = False):
     # if it's anything else, return it in its original form
     return data
 
+def handlePerson(retdata, position, person, prefix, lang):
+    print( ">>>> " + position)
+    item = {}
+    # todo add type
+    item['_'.join(['position', lang])] = position
+    item['_'.join(['name', lang])] = person.find(
+        'div', {"class": "small_title"}).getText().encode('utf-8').split('-')[0].strip()
+    # position = ''
+    description = person.find(
+        'div', {"class": "person_text"})
+    item['_'.join(['description', lang])] = '' if description is None else description.getText().encode('utf-8').strip()
+    try:
+        item['img'] = prefix + description.find('div', {"class": "person_image"})['src']
+    except (KeyError, ValueError):
+        item['img'] = ''
+    # url = ''
+    pageContainer = person.find(
+        'div', {"class": "person_contact"}).find('a')
+    # print
+    item['url'] = '' if pageContainer is None else pageContainer['href'].encode(
+        'utf-8')  # if pageContainer != null # todo add prefix in case or index.jsp leading
+    if(item['url'].startswith('index')):
+        item['url'] = prefix + item['url']
+    emailDiv = person.find(
+        'div', {'class': "person_email_container"})
+    if emailDiv is not None:
+        try:
+            item['email'] = '' if emailDiv is None else emailDiv.find_all('span')[
+            0].getText().encode('utf-8')
+        except:
+            try:
+                item['email'] = '' if emailDiv is None else emailDiv.getText().encode('utf-8')
+            except:
+                item['email'] = ''
+    else:
+        item['email'] = ''
+    id = person.get("people_id", None)
+    item['personId'] = id.encode('utf-8') if id is not None else item['email']
+    try:
+        # index = map(operator.attrgetter('id'), my_list).index('specific_id')
+        index = [x['personId']
+                    for x in retdata].index(item['personId'])
+    except ValueError:
+        index = -1
+    if(index != -1):
+        for key in item:
+            retdata[index][key] = item[key]
+    else:
+        retdata.append(item)
+
 # config read
 
 with open(sys.argv[1]) as json_data_file:
-    config = json.load(json_data_file)
+    # son_load_byteified(open(outputFile))
+    config = json_load_byteified(json_data_file)
 
-mode = config['mode']
+module = config['module']
 
 # Webpage connection
 # html = "https://www.csd.uoc.gr/CSD/index.jsp?content=time_schedule&lang=gr"
@@ -83,52 +134,63 @@ for lang in config['url']:
     # fail value
 
 # academic_staff works
-    if mode == "people":
+    if module == "people":
         prefix = 'http://www.csd.uoc.gr/CSD/'
-        elements = soup.find_all('div', {"class": "position-group"})
-        print(len(elements))
-        for el in elements:
-            position = "".join(el['group-name'].encode('utf-8'))
-            print( el['group-name'])
-            # print el
-            for person in el.find_all('div', {"class": "person"}):
-                print( ">>>> " + position)
-                item = {}
-                # todo add type
-                item['_'.join(['position', lang])] = position
-                item['_'.join(['name', lang])] = person.find(
-                    'div', {"class": "small_title"}).getText().encode('utf-8').split('-')[0].strip()
-                # position = ''
-                item['personId'] = person['people_id'].encode('utf-8')
-                description = ''
-                item['_'.join(['description', lang])] = person.find(
-                    'div', {"class": "person_text"}).getText().encode('utf-8').strip()
-                # url = ''
-                pageContainer = person.find(
-                    'div', {"class": "person_contact"}).find('a')
-                # print
-                item['url'] = '' if pageContainer is None else pageContainer['href'].encode(
-                    'utf-8')  # if pageContainer != null # todo add prefix in case or index.jsp leading
-                if(item['url'].startswith('index')):
-                    item['url'] = prefix + item['url']
-                emailDiv = person.find(
-                    'div', {'class': "person_email_container"})
-                item['email'] = '' if emailDiv is None else emailDiv.find_all('span')[
-                    0].getText().encode('utf-8')
-                try:
-                    # index = map(operator.attrgetter('id'), my_list).index('specific_id')
-                    index = [x['personId']
-                             for x in retdata].index(item['personId'])
-                except ValueError:
-                    index = -1
-                if(index != -1):
-                    for key in item:
-                        retdata[index][key] = item[key]
-                else:
-                    retdata.append(item)
+        mode = config.get("mode", None)
+        if mode == "text_field":
+            for person in soup.find_all('div', {"class": "text_field"}):
+                position = config.get("position", {}).get(lang, "")
+                handlePerson(retdata, position, person, prefix, lang)
+        elif mode == "person":
+            for person in soup.find_all('div', {"class": "person"}):
+                position = config.get("position", {}).get(lang, "")
+                handlePerson(retdata, position, person, prefix, lang)
+        elif mode == "position-group":
+            elements = soup.find_all('div', {"class": "position-group"})
+            print(len(elements))
+            for el in elements:
+                position = "".join(el['group-name'].encode('utf-8'))
+                print( el['group-name'])
+                # print el
+                for person in el.find_all('div', {"class": "person"}):
+                    handlePerson(retdata, position, person, prefix, lang)
+                # print( ">>>> " + position)
+                # item = {}
+                # # todo add type
+                # item['_'.join(['position', lang])] = position
+                # item['_'.join(['name', lang])] = person.find(
+                #     'div', {"class": "small_title"}).getText().encode('utf-8').split('-')[0].strip()
+                # # position = ''
+                # item['personId'] = person['people_id'].encode('utf-8')
+                # description = ''
+                # item['_'.join(['description', lang])] = person.find(
+                #     'div', {"class": "person_text"}).getText().encode('utf-8').strip()
+                # # url = ''
+                # pageContainer = person.find(
+                #     'div', {"class": "person_contact"}).find('a')
+                # # print
+                # item['url'] = '' if pageContainer is None else pageContainer['href'].encode(
+                #     'utf-8')  # if pageContainer != null # todo add prefix in case or index.jsp leading
+                # if(item['url'].startswith('index')):
+                #     item['url'] = prefix + item['url']
+                # emailDiv = person.find(
+                #     'div', {'class': "person_email_container"})
+                # item['email'] = '' if emailDiv is None else emailDiv.find_all('span')[
+                #     0].getText().encode('utf-8')
+                # try:
+                #     # index = map(operator.attrgetter('id'), my_list).index('specific_id')
+                #     index = [x['personId']
+                #              for x in retdata].index(item['personId'])
+                # except ValueError:
+                #     index = -1
+                # if(index != -1):
+                #     for key in item:
+                #         retdata[index][key] = item[key]
+                # else:
+                #     retdata.append(item)
 
-# seems ok
-    if mode == "schedule":
+# seems ok - eng missing
+    if module == "schedule":
         table = soup.find('table', id='schedule_table')
         # rows = table.findAll('tr')
 
@@ -179,7 +241,7 @@ for lang in config['url']:
             retdata.append(item)
 
 # works
-    if mode == "contacts":
+    if module == "contacts":
       canAdd = False
       # at, phone, fax, facebook, link
       atRegex = re.compile('.*at-icon.*')
@@ -286,8 +348,9 @@ for lang in config['url']:
           # except KeyError:
           #   continue
       print( retdata)
-    
-    if mode == "model_program":
+
+# issue is appending to the same one
+    if module == "model-program":
         table = soup.find_all('div', id="currentcontent")
         for tab in table:
             temp = tab
@@ -338,7 +401,7 @@ for lang in config['url']:
 
                     # print item
 
-    if mode == "courses":
+    if module == "courses":
         # soup.find_all('a', {'href': re.compile(r'crummy\.com/')})
         course_tables = soup.find_all(
             'tr', {'id': re.compile(r'course[0-9]+')})
@@ -537,6 +600,20 @@ for lang in config['url']:
             # print retdata
             # if(tds[1] is not None):
 
+    if module == "documents":
+        prefix = 'http://www.csd.uoc.gr/CSD/'
+        elements = soup.find("ol")
+        for el in elements.find_all("li"):
+            item = {}
+            item["label"] = el.getText().split('(')[0].encode('utf-8').strip()
+            sourceElements = el.find_all("a")
+            item["source"] = {}
+            for src in sourceElements:
+                if src.getText() == "PDF":
+                    item["source"]["pdf"] = prefix + src["href"].encode('utf-8').strip()
+                if src.getText() == "WORD":
+                    item["source"]["word"] = prefix + src["href"].encode('utf-8').strip()
+            retdata.append(item)
     firstDone = True
     # html = config['url'][lang]
     # r=requests.get(html)``

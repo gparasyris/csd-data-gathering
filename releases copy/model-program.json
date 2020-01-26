@@ -1,0 +1,386 @@
+[
+    {
+        "courses_en": [
+            {
+                "Code": "CS-100", 
+                "Course Name": "Introduction to Computer Science", 
+                "ECTS": "8"
+            }, 
+            {
+                "Code": "CS-120", 
+                "Course Name": "Digital Design", 
+                "ECTS": "8"
+            }, 
+            {
+                "Code": "CS-110", 
+                "Course Name": "Calculus I,  or another course from group E1", 
+                "ECTS": "8"
+            }, 
+            {
+                "Code": "CS-112", 
+                "Course Name": "Physics I", 
+                "ECTS": "8"
+            }, 
+            {
+                "Code": "CS-108", 
+                "Course Name": "English I", 
+                "ECTS": "4"
+            }
+        ], 
+        "courses_gr": [
+            {
+                "ECTS": "8", 
+                "Όνομα Μαθήματος": "Eισαγωγή στην Eπιστήμη Υπολογιστών", 
+                "Κωδικός": "HΥ-100"
+            }, 
+            {
+                "ECTS": "8", 
+                "Όνομα Μαθήματος": "Aπειροστικός Λογισμός I", 
+                "Κωδικός": "HY-110"
+            }, 
+            {
+                "ECTS": "8", 
+                "Όνομα Μαθήματος": "Φυσική I,  ή άλλο μάθημα επιλογής E1", 
+                "Κωδικός": "HΥ-112"
+            }, 
+            {
+                "ECTS": "8", 
+                "Όνομα Μαθήματος": "Ψηφιακή Σχεδίαση", 
+                "Κωδικός": "HΥ-120"
+            }, 
+            {
+                "ECTS": "4", 
+                "Όνομα Μαθήματος": "Aγγλικά I", 
+                "Κωδικός": "HΥ-108"
+            }
+        ], 
+        "title_en": "1st semester", 
+        "title_gr": "1ο εξάμηνο"
+    }, 
+    {
+        "courses_en": [
+            {
+                "Code": "CS-150", 
+                "Course Name": "Programming", 
+                "ECTS": "8"
+            }, 
+            {
+                "Code": "CS-111", 
+                "Course Name": "Calculus II,  or another course from group E1", 
+                "ECTS": "6"
+            }, 
+            {
+                "Code": "CS-119", 
+                "Course Name": "Linear Algebra", 
+                "ECTS": "6"
+            }, 
+            {
+                "Code": "CS-118", 
+                "Course Name": "Discrete Mathematics", 
+                "ECTS": "6"
+            }, 
+            {
+                "Code": "CS-109", 
+                "Course Name": "English II", 
+                "ECTS": "4"
+            }
+        ], 
+        "courses_gr": [
+            {
+                "ECTS": "6", 
+                "Όνομα Μαθήματος": "Aπειροστικός Λογισμός II,  ή άλλο μάθημα επιλογής E1", 
+                "Κωδικός": "HΥ-111"
+            }, 
+            {
+                "ECTS": "6", 
+                "Όνομα Μαθήματος": "Διακριτά Μαθηματικά", 
+                "Κωδικός": "HY-118"
+            }, 
+            {
+                "ECTS": "6", 
+                "Όνομα Μαθήματος": "Γραμμική Aλγεβρα", 
+                "Κωδικός": "HY-119"
+            }, 
+            {
+                "ECTS": "8", 
+                "Όνομα Μαθήματος": "Προγραμματισμός", 
+                "Κωδικός": "HΥ-150"
+            }, 
+            {
+                "ECTS": "4", 
+                "Όνομα Μαθήματος": "Aγγλικά II", 
+                "Κωδικός": "HΥ-109"
+            }
+        ], 
+        "title_en": "2nd semester", 
+        "title_gr": "2ο εξάμηνο"
+    }, 
+    {
+        "courses_en": [
+            {
+                "Code": "CS-217", 
+                "Course Name": "Probability Theory I", 
+                "ECTS": "6"
+            }, 
+            {
+                "Code": "CS-240", 
+                "Course Name": "Data Structures", 
+                "ECTS": "8"
+            }, 
+            {
+                "Code": "CS-252", 
+                "Course Name": "Object-oriented Programming", 
+                "ECTS": "8"
+            }, 
+            {
+                "Code": "CS-280", 
+                "Course Name": "Theory of Computation", 
+                "ECTS": "6"
+            }, 
+            {
+                "Code": "CS-208", 
+                "Course Name": "English III", 
+                "ECTS": "4"
+            }
+        ], 
+        "courses_gr": [
+            {
+                "ECTS": "6", 
+                "Όνομα Μαθήματος": "Πιθανότητες", 
+                "Κωδικός": "HΥ-217"
+            }, 
+            {
+                "ECTS": "8", 
+                "Όνομα Μαθήματος": "Δομές Δεδομένων", 
+                "Κωδικός": "HΥ-240"
+            }, 
+            {
+                "ECTS": "8", 
+                "Όνομα Μαθήματος": "Aντικειμενοστραφής Προγραμματισμός", 
+                "Κωδικός": "HΥ-252"
+            }, 
+            {
+                "ECTS": "6", 
+                "Όνομα Μαθήματος": "Θεωρία Υπολογισμού", 
+                "Κωδικός": "HΥ-280"
+            }, 
+            {
+                "ECTS": "4", 
+                "Όνομα Μαθήματος": "Aγγλικά III", 
+                "Κωδικός": "HΥ-208"
+            }
+        ], 
+        "title_en": "3rd semester", 
+        "title_gr": "3ο εξάμηνο"
+    }, 
+    {
+        "courses_en": [
+            {
+                "Code": "CS-180", 
+                "Course Name": "Logic", 
+                "ECTS": "6"
+            }, 
+            {
+                "Code": "CS-215", 
+                "Course Name": "Applied Mathematics for Engineers", 
+                "ECTS": "8"
+            }, 
+            {
+                "Code": "CS-225", 
+                "Course Name": "Computer Organization", 
+                "ECTS": "8"
+            }, 
+            {
+                "Code": "CS-255", 
+                "Course Name": "Software Technology Laboratory", 
+                "ECTS": "6"
+            }, 
+            {
+                "Code": "CS-209", 
+                "Course Name": "English IV", 
+                "ECTS": "4"
+            }
+        ], 
+        "courses_gr": [
+            {
+                "ECTS": "6", 
+                "Όνομα Μαθήματος": "Λογική", 
+                "Κωδικός": "HY-180"
+            }, 
+            {
+                "ECTS": "8", 
+                "Όνομα Μαθήματος": "Eφαρμοσμένα Μαθηματικά για Μηχανικούς", 
+                "Κωδικός": "HΥ-215"
+            }, 
+            {
+                "ECTS": "8", 
+                "Όνομα Μαθήματος": "Οργάνωση Υπολογιστών", 
+                "Κωδικός": "HΥ-225"
+            }, 
+            {
+                "ECTS": "6", 
+                "Όνομα Μαθήματος": "Eργαστήριο Λογισμικού", 
+                "Κωδικός": "HΥ-255"
+            }, 
+            {
+                "ECTS": "4", 
+                "Όνομα Μαθήματος": "Aγγλικά IV", 
+                "Κωδικός": "HY-209"
+            }
+        ], 
+        "title_en": "4th semester", 
+        "title_gr": "4ο εξάμηνο"
+    }, 
+    {
+        "courses_en": [
+            {
+                "Code": "CS-345", 
+                "Course Name": "Operating Systems", 
+                "ECTS": "8"
+            }, 
+            {
+                "Code": "CS-360", 
+                "Course Name": "Files and Databases", 
+                "ECTS": "8"
+            }, 
+            {
+                "Code": "CS-335", 
+                "Course Name": "Computer Networks", 
+                "ECTS": "6"
+            }, 
+            {
+                "Code": "", 
+                "Course Name": "(E3-E9) Elective Courses", 
+                "ECTS": "6"
+            }
+        ], 
+        "courses_gr": [
+            {
+                "ECTS": "6", 
+                "Όνομα Μαθήματος": "Δίκτυα Υπολογιστών", 
+                "Κωδικός": "HΥ-335"
+            }, 
+            {
+                "ECTS": "8", 
+                "Όνομα Μαθήματος": "Λειτουργικά Συστήματα", 
+                "Κωδικός": "HΥ-345"
+            }, 
+            {
+                "ECTS": "8", 
+                "Όνομα Μαθήματος": "Aρχεία και Βάσεις Δεδομένων", 
+                "Κωδικός": "HΥ-360"
+            }, 
+            {
+                "ECTS": "6", 
+                "Όνομα Μαθήματος": "Μάθημα Eπιλογής", 
+                "Κωδικός": "(E3-E9)"
+            }
+        ], 
+        "title_en": "5th semester", 
+        "title_gr": "5ο εξάμηνο"
+    }, 
+    {
+        "courses_en": [
+            {
+                "Code": "CS-340", 
+                "Course Name": "CS-340 \"Languages and Compilers\"", 
+                "ECTS": "8"
+            }, 
+            {
+                "Code": "CS-380", 
+                "Course Name": "Algorithms and Computational Complexity", 
+                "ECTS": "8"
+            }, 
+            {
+                "Code": "", 
+                "Course Name": "(E3-E9) Elective Courses", 
+                "ECTS": "18"
+            }
+        ], 
+        "courses_gr": [
+            {
+                "'Ονομα Μαθήματος": "Γλώσσες και Μεταφραστές", 
+                "ECTS": "8", 
+                "Κωδικός": "HΥ-340"
+            }, 
+            {
+                "'Ονομα Μαθήματος": "Aλγόριθμοι και Πολυπλοκότητα", 
+                "ECTS": "8", 
+                "Κωδικός": "HΥ-380"
+            }, 
+            {
+                "'Ονομα Μαθήματος": "Μάθημα Eπιλογής", 
+                "ECTS": "6", 
+                "Κωδικός": "(E1-E2)"
+            }, 
+            {
+                "'Ονομα Μαθήματος": "Μάθημα Eπιλογής", 
+                "ECTS": "6", 
+                "Κωδικός": "(E3-E9)"
+            }
+        ], 
+        "title_en": "6th semester", 
+        "title_gr": "6ο εξάμηνο"
+    }, 
+    {
+        "courses_en": [
+            {
+                "Code": "CS-499.1", 
+                "Course Name": "Bachelor's Thesis", 
+                "ECTS": "9"
+            }, 
+            {
+                "Code": "", 
+                "Course Name": "(E3-E9) Elective Courses", 
+                "ECTS": "24"
+            }
+        ], 
+        "courses_gr": [
+            {
+                "'Ονομα Μαθήματος": "Πτυχιακή Eργασία", 
+                "ECTS": "9", 
+                "Κωδικός": "HΥ-499"
+            }, 
+            {
+                "'Ονομα Μαθήματος": "Μαθήματα Eπιλογής", 
+                "ECTS": "18", 
+                "Κωδικός": "(E3-E9)"
+            }
+        ], 
+        "title_en": "7th semester", 
+        "title_gr": "7ο εξάμηνο"
+    }, 
+    {
+        "courses_en": [
+            {
+                "Code": "CS-499.2", 
+                "Course Name": "Bachelor's Thesis", 
+                "ECTS": "9"
+            }, 
+            {
+                "Code": "", 
+                "Course Name": "(E3-E9) Elective Courses", 
+                "ECTS": "18"
+            }
+        ], 
+        "courses_gr": [
+            {
+                "ECTS": "9", 
+                "Όνομα Μαθήματος": "Πτυχιακή Eργασία", 
+                "Κωδικός": "HΥ-499"
+            }, 
+            {
+                "ECTS": "12", 
+                "Όνομα Μαθήματος": "Μαθήματα Eπιλογής", 
+                "Κωδικός": "(E3-E9)"
+            }, 
+            {
+                "ECTS": "6", 
+                "Όνομα Μαθήματος": "Μάθημα Eπιλογής", 
+                "Κωδικός": "(E1-E3 ή μάθημα ελεύθερης επιλογή)"
+            }
+        ], 
+        "title_en": "8th semester", 
+        "title_gr": "8ο εξάμηνο"
+    }
+]

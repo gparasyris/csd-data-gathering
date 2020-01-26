@@ -1,0 +1,12 @@
+{
+  "type": "special_teaching",
+  "module": "people",
+  "mode": "text_field",
+  "url": {
+    "gr": "https://www.csd.uoc.gr/CSD/index.jsp?custom=special_teaching&openmenu=demoAcc2&lang=gr",
+    "en": "https://www.csd.uoc.gr/CSD/index.jsp?custom=special_teaching&openmenu=demoAcc2&lang=en"
+  },
+  "output": "candidates/people.json",
+  "outputFileName": "people.json"
+}
+

@@ -1,0 +1,12 @@
+{
+  "type": "emeriti_faculty",
+  "module": "people",
+  "mode": "no-person!",
+  "url": {
+    "gr": "https://www.csd.uoc.gr/CSD/index.jsp?custom=emeriti_faculty&openmenu=demoAcc2&lang=gr",
+    "en": "https://www.csd.uoc.gr/CSD/index.jsp?custom=emeriti_faculty&openmenu=demoAcc2&lang=en"
+  },
+  "output": "candidates/people.json",
+  "outputFileName": "people.json"
+}
+

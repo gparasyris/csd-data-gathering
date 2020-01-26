@@ -1,0 +1,16 @@
+{
+  "type": "edip_etep",
+  "position": {
+    "gr": "Εργαστηριακό Προσωπικό",
+    "en": "Lab Personnel"
+  },
+  "module": "people",
+  "mode": "person",
+  "url": {
+    "gr": "https://www.csd.uoc.gr/CSD/index.jsp?content=edip_etep&openmenu=demoAcc2&lang=gr",
+    "en": "https://www.csd.uoc.gr/CSD/index.jsp?content=edip_etep&openmenu=demoAcc2&lang=en"
+  },
+  "output": "candidates/people.json",
+  "outputFileName": "people.json"
+}
+

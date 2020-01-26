@@ -1,0 +1,9 @@
+{
+    "_v": "0.0.2", 
+    "modules": {
+        "contacts": "0.0.2", 
+        "courses": "0.0.1", 
+        "model-program": "0.0.1", 
+        "people": "0.0.1"
+    }
+}

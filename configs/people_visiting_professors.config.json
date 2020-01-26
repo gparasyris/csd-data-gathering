@@ -1,0 +1,12 @@
+{
+  "type": "visiting_professors",
+  "module": "people",
+  "mode": "position-group",
+  "url": {
+    "gr": "https://www.csd.uoc.gr/CSD/index.jsp?content=visiting_professors&openmenu=demoAcc2&lang=gr",
+    "en": "https://www.csd.uoc.gr/CSD/index.jsp?content=visiting_professors&openmenu=demoAcc2&lang=en"
+  },
+  "output": "candidates/people.json",
+  "outputFileName": "people.json"
+}
+

@@ -64,7 +64,13 @@ def increment_ver(version, maxVersion=50):
         version[1] = "0"
         version[2] = "0"
     return '.'.join(version)
+
+
 # 1. go through the configs to generate candidates/
+configs = os.listdir(DEFAULT_CONFIG_PATH)
+newKeys = {}
+for config in configs:
+    configOptions = json_load_byteified(open(DEFAULT_CONFIG_PATH + config))
 
 
 # 2. load version json

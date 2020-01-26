@@ -1,12 +1,18 @@
 # Modules
 
 People
-	- academic_staff
+	# - academic_staff
+	# - administrative_personnel
+	# - edip_etep
+	#! - emeriti_faculty - traganitis only
+	- honorarydoctors
+	# - special_teaching
+	# - visiting_professors
 Courses
-!#Schedule
-Model-Program
-#Contacts
-Documents
+# Schedule (! wait new data)
+# Model-Program
+# Contacts
+# Documents
 
 
 - Reasearch

@@ -1,0 +1,12 @@
+{
+  "type": "honorarydoctors",
+  "module": "people",
+  "mode": "custom!",
+  "url": {
+    "gr": "https://www.csd.uoc.gr/CSD/index.jsp?content=honorarydoctors&openmenu=demoAcc2&lang=g",
+    "en": "https://www.csd.uoc.gr/CSD/index.jsp?content=honorarydoctors&openmenu=demoAcc2&lang=en"
+  },
+  "output": "candidates/people.json",
+  "outputFileName": "people.json"
+}
+

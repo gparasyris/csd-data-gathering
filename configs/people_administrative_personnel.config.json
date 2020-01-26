@@ -1,0 +1,16 @@
+{
+  "type": "administrative_personnel",
+  "module": "people",
+  "mode": "person",
+  "position": {
+    "gr": "Διοικητικό Προσωπικό",
+    "en": "Αdministrative Personnel"
+  },
+  "url": {
+    "gr": "https://www.csd.uoc.gr/CSD/index.jsp?content=administrative_personnel&openmenu=demoAcc2&lang=g",
+    "en": "https://www.csd.uoc.gr/CSD/index.jsp?content=administrative_personnel&openmenu=demoAcc2&lang=en"
+  },
+  "output": "candidates/people.json",
+  "outputFileName": "people.json"
+}
+

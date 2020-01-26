@@ -1,0 +1,12 @@
+{
+  "type": "academic_staff",
+  "module": "people",
+  "mode": "position-group",
+  "url": {
+    "gr": "https://www.csd.uoc.gr/index.jsp?content=academic_staff&lang=gr",
+    "en": "https://www.csd.uoc.gr/index.jsp?content=academic_staff&lang=en"
+  },
+  "output": "candidates/people.json",
+  "outputFileName": "people.json"
+}
+

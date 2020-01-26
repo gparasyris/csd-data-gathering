@@ -1,0 +1,114 @@
+[
+    {
+        "email_en": {
+            "title": "Email address",
+            "value": "csd AT csd DOT uoc DOT gr"
+        },
+        "email_gr": {
+            "title": "Διεύθυνση email",
+            "value": "csd AT csd DOT uoc DOT gr"
+        },
+        "fax_en": {
+            "title": "Fax",
+            "value": "+30 2810393501"
+        },
+        "fax_gr": {
+            "title": "Φαξ",
+            "value": "+30 28103935011"
+        },
+        "label_en": "General Info",
+        "label_gr": "Γενικές Πληροφορίες",
+        "phone_en": {
+            "title": "Telephone",
+            "value": "+30 2810393500"
+        },
+        "phone_gr": {
+            "title": "Τηλέφωνο",
+            "value": "+30 2810393500"
+        }
+    },
+    {
+        "email_en": {
+            "title": "Email address",
+            "value": "ugram AT csd DOT uoc DOT gr"
+        },
+        "email_gr": {
+            "title": "Διεύθυνση email",
+            "value": "ugram AT csd DOT uoc DOT gr"
+        },
+        "fax_en": {
+            "title": "Fax",
+            "value": "+30 2810393804"
+        },
+        "fax_gr": {
+            "title": "Φαξ",
+            "value": "+30 2810393804"
+        },
+        "label_en": "Undergraduate studies secretariat",
+        "label_gr": "Γραμματεία προπτυχιακών σπουδών",
+        "link_en": {
+            "title": "Secretariat's page",
+            "value": "https://www.csd.uoc.gr/CSD/index.jsp?content=secretariat_services&lang=en"
+        },
+        "link_gr": {
+            "title": "Σελίδα γραμματείας",
+            "value": "https://www.csd.uoc.gr/CSD/index.jsp?content=secretariat_services&lang=gr"
+        },
+        "phone_en": {
+            "title": "Telephone",
+            "value": "+30 2810393507, 2810393511"
+        },
+        "phone_gr": {
+            "title": "Τηλέφωνο",
+            "value": "+30 2810393507, 2810393511"
+        }
+    },
+    {
+        "email_en": {
+            "title": "Email address",
+            "value": "pgram AT csd DOT uoc DOT gr"
+        },
+        "email_gr": {
+            "title": "Διεύθυνση email",
+            "value": "pgram AT csd DOT uoc DOT gr"
+        },
+        "fax_en": {
+            "title": "Fax",
+            "value": "+30 2810393501"
+        },
+        "fax_gr": {
+            "title": "Φαξ",
+            "value": "+30 2810393501"
+        },
+        "label_en": "Postgraduate studies secretariat",
+        "label_gr": "Γραμματεία μεταπτυχιακών σπουδών",
+        "phone_en": {
+            "title": "Telephone",
+            "value": "+30 2810393592"
+        },
+        "phone_gr": {
+            "title": "Τηλέφωνο",
+            "value": "+30 2810393592"
+        }
+    },
+    {
+        "fax_en": {
+            "title": "Fax",
+            "value": "+30 2810393501"
+        },
+        "fax_gr": {
+            "title": "Φαξ",
+            "value": "+30 2810393501"
+        },
+        "label_en": "Departmental administration",
+        "label_gr": "Γραμματεία προέδρου (διοικητικά - οργανωτικά θέματα)",
+        "phone_en": {
+            "title": "Telephone",
+            "value": "+30 2810393505"
+        },
+        "phone_gr": {
+            "title": "Τηλέφωνο",
+            "value": "+30 2810393505"
+        }
+    }
+]
