@@ -1,6 +1,6 @@
 # Modules
 
-People
+#People
 	# - academic_staff
 	# - administrative_personnel
 	# - edip_etep
