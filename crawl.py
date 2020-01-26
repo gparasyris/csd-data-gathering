@@ -400,7 +400,7 @@ def crawlModule(configPath):
 									# retdata = semesters
 
 											# print item
-
+	# fails
 			if module == "courses":
 					# soup.find_all('a', {'href': re.compile(r'crummy\.com/')})
 					course_tables = soup.find_all(
@@ -571,10 +571,10 @@ def crawlModule(configPath):
 																		# if single:
 																		#   single ={}
 															# print item
-																# else:
-																#   actualKey = prefix if prefix in ["email", "url"] else '_'.join([prefix, lang])
-																#   value = divs[i].getText().encode('utf-8').replace("NULL ", "").replace("\r\n\n", "").replace("\r\n", "").replace("\r\n\t\n", " ").replace("\n", " ").strip()
-																#   item[actualKey] = value
+																else:
+																  actualKey = prefix if prefix in ["ects"] else '_'.join([prefix, lang])
+																  value = divs[i].getText().encode('utf-8').replace("NULL ", "").replace("\r\n\n", "").replace("\r\n", "").replace("\r\n\t\n", " ").replace("\n", " ").strip()
+																  item[actualKey] = value
 
 															# item[prevKey] = divs[i].getText().encode('utf-8').strip()
 															prevKey = ''
@@ -599,7 +599,7 @@ def crawlModule(configPath):
 									# retdata.append(item)
 							# print retdata
 							# if(tds[1] is not None):
-
+	#works
 			if module == "documents":
 					prefix = 'http://www.csd.uoc.gr/CSD/'
 					elements = soup.find("ol")
