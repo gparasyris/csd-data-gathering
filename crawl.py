@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import requests
 from bs4 import BeautifulSoup
-from data_diff import  Diff
+from data_diff import Diff
 import codecs
 import json
 import soupsieve
@@ -23,10 +23,8 @@ bspath = os.path.join(os.path.dirname(
 sys.path.append(bspath)
 
 
-
 def get_param_from_url(url, param_name):
     return [i.split("=")[-1] for i in url.split("?", 1)[-1].split("&") if i.startswith(param_name + "=")][0]
-
 
 
 def json_load_byteified(file_handle):
@@ -35,19 +33,30 @@ def json_load_byteified(file_handle):
         ignore_dicts=True
     )
 
+
 def json_loads_byteified(json_text):
     return _byteify(
         json.loads(json_text, object_hook=_byteify),
         ignore_dicts=True
     )
 
-def _byteify(data, ignore_dicts = False):
+# def getUrlFromStyle(element):
+#   div_style = element['style']
+#   style = cssutils.parseStyle(div_style)
+#   url = style['background-image']
+
+#   >>> url
+#   u'url(/uploads/images/players/16113-1399107741.jpeg)'
+#   >>> url = url.replace('url(', '').replace(')', '') 
+
+
+def _byteify(data, ignore_dicts=False):
     # if this is a unicode string, return its string representation
     if isinstance(data, unicode):
         return data.encode('utf-8')
     # if this is a list of values, return list of byteified values
     if isinstance(data, list):
-        return [ _byteify(item, ignore_dicts=True) for item in data ]
+        return [_byteify(item, ignore_dicts=True) for item in data]
     # if this is a dictionary, return dictionary of byteified keys and values
     # but only if we haven't already byteified it
     if isinstance(data, dict) and not ignore_dicts:
@@ -57,6 +66,7 @@ def _byteify(data, ignore_dicts = False):
         }
     # if it's anything else, return it in its original form
     return data
+
 
 def handlePerson(retdata, position, person, prefix, lang):
     # print( ">>>> " + position)
@@ -68,10 +78,15 @@ def handlePerson(retdata, position, person, prefix, lang):
     # position = ''
     description = person.find(
         'div', {"class": "person_text"})
-    item['_'.join(['description', lang])] = '' if description is None else description.getText().encode('utf-8').strip()
+    item['_'.join(['description', lang])] = '' if description is None else description.getText(
+    ).encode('utf-8').strip()
     try:
-        item['img'] = prefix + description.find('div', {"class": "person_image"})['src']
-    except (KeyError, ValueError):
+        try:
+          imgDiv = person.find('div', {"class": "person_image"})
+          item['img'] = prefix + imgDiv['src']
+        except (KeyError, ValueError, AttributeError):
+          item['img'] = prefix + re.search(r'url\((.+)\)', imgDiv['style']).group(1)
+    except (KeyError, ValueError, AttributeError):
         item['img'] = ''
     # url = ''
     pageContainer = person.find(
@@ -273,7 +288,7 @@ def crawlModule(configPath):
 							if img is not None:
 								# # print img
 								if atRegex.match(img['src']):
-									#email['title'] = img['title'].encode('raw_unicode_escape').decode('utf-8').strip()#.encode('utf-8').strip()
+									# email['title'] = img['title'].encode('raw_unicode_escape').decode('utf-8').strip()#.encode('utf-8').strip()
 									email['title'] = img['title'].encode('utf8').strip() #.decode('latin1').strip()
 									email['value'] = divs[i].getText().encode('utf-8').strip()
 									item[u'_'.join(['email', lang])] = email
@@ -599,7 +614,7 @@ def crawlModule(configPath):
 									# retdata.append(item)
 							# # print retdata
 							# if(tds[1] is not None):
-	#works
+	# works
 			if module == "documents":
 					prefix = 'http://www.csd.uoc.gr/CSD/'
 					elements = soup.find("ol")

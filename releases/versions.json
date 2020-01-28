@@ -1,11 +1,11 @@
 {
-    "_v": "0.0.5", 
+    "_v": "0.0.6", 
     "modules": {
         "contacts": "0.0.2", 
         "courses": "0.0.2", 
         "documents": "0.0.1", 
         "model-program": "0.0.2", 
-        "people": "0.0.2", 
+        "people": "0.0.3", 
         "schedule": "0.0.1"
     }
 }
