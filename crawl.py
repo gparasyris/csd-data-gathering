@@ -152,7 +152,7 @@ def handleStream(retdata, lang, stream, type):
             news_soup = BeautifulSoup(news_response, "html.parser")
 
             descriptionHtml = news_soup.find(
-                'div', {'class': 'text_field rel hidden'})
+                'div', {'class': 'announcement_body'})
 
             # print(str(descriptionHtml).decode(
             #     'utf-8').encode(
