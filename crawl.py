@@ -123,13 +123,15 @@ def handlePerson(retdata, position, person, prefix, lang):
     else:
         retdata.append(item)
 
-def handleStream(retdata, lang, stream, type):
+def handleStream(retdata, lang, stream, iType):
     # for news_container in stream:
+    # print(iType)
     a_containers = stream.find_all('li')
     for ni in a_containers:
         date = ni.find('div', {'class': 'ann_date'}
                        ).getText().encode('utf-8').strip()
-        type = 'pinned' if ni.has_attr('pinned_id') else type
+        type = 'pinned' if ni.has_attr('pinned_id') else iType
+        print(type)
         titleContainer = ni.find('div', {'class': 'ann_title'}).find('a')
         title = None
         newsId = None
@@ -690,11 +692,12 @@ def crawlModule(configPath):
 			if module in ['announcements', 'news'] :
 					newsStream = soup.find_all(
                     'div', {'class': 'announcements_cont'})
-                # print('*********')
-                # print(newsStream)
-                # print('*********')
-                # check length
- 					handleStream(retdata, lang, newsStream[0], 'stream')
+					for stream in newsStream:
+						handleStream(retdata, lang, stream, 'stream')
+					newsImportant = soup.find_all(
+                    'div', {'class': 'important_announcements_cont'})
+					for stream in newsImportant:
+						handleStream(retdata, lang, stream, 'important')
 
 			firstDone = True
 			# html = config['url'][lang]
