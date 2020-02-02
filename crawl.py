@@ -123,7 +123,64 @@ def handlePerson(retdata, position, person, prefix, lang):
     else:
         retdata.append(item)
 
+def handleStream(retdata, lang, stream, type):
+    # for news_container in stream:
+    a_containers = stream.find_all('li')
+    for ni in a_containers:
+        date = ni.find('div', {'class': 'ann_date'}
+                       ).getText().encode('utf-8').strip()
+        type = 'pinned' if ni.has_attr('pinned_id') else type
+        titleContainer = ni.find('div', {'class': 'ann_title'}).find('a')
+        title = None
+        newsId = None
+        url = ''
+        if titleContainer is not None:
+            title = titleContainer.getText().encode('utf-8').strip()
+            try:
+                url = titleContainer['href'].encode('utf-8').strip()
+            except (KeyError, ValueError, AttributeError):
+                url = ''
+            try:
+                newsId = re.search("ann=([0-9]+)&?", url).group(1)
+            except (KeyError, ValueError, AttributeError):
+                newsId = None
+
+        if newsId is not None:
+            news_request = requests.get(url)  # // todo below function
+            news_response = news_request.content.decode('utf-8').replace("&nbsp;", " NULL ").replace("\\u00A0",
+                                                                                                     " ").replace(u"\u0391", "A").replace(u"\u0397", "H").replace("<br />", " ").replace("<br/>", " ").encode('utf-8')
+            news_soup = BeautifulSoup(news_response, "html.parser")
+
+            descriptionHtml = news_soup.find(
+                'div', {'class': 'text_field rel hidden'})
+
+            # print(str(descriptionHtml).decode(
+            #     'utf-8').encode(
+            #     'utf-8').strip())
+            description = str(descriptionHtml).decode(
+                'utf-8').encode(
+                'utf-8').strip() if descriptionHtml is not None else ''
+            item = {}
+            item['_'.join(['description', lang])] = description
+            item['_'.join(['title', lang])] = title
+            item['date'] = date
+            item['type'] = type
+            item['url'] = url
+            item['newsId'] = newsId
+
+            try:
+                index = [x['newsId']
+                         for x in retdata].index(item['newsId'])
+            except ValueError:
+                index = -1
+            if(index != -1):
+                for key in item:
+                    retdata[index][key] = item[key]
+            else:
+                retdata.append(item)
 # config read
+
+
 def crawlModule(configPath):
 	with open(configPath) as json_data_file:
 			# son_load_byteified(open(outputFile))
@@ -143,7 +200,8 @@ def crawlModule(configPath):
 			r = requests.get(html)
 			c = r.content.decode('utf-8').replace("&nbsp;", " NULL ").replace("\\u00A0",
 																																				" ").replace(u"\u0391", "A").replace(u"\u0397", "H").replace("<br />", " ").replace("<br/>", " ").encode('utf-8')
-			soup = BeautifulSoup(c, "html.parser")
+			parser = config['parser'] if 'parser' in config else 'html.parser'
+			soup = BeautifulSoup(c, parser)
 
 			# todo all lines should call another function that try catches and returns
 			# fail value
@@ -629,6 +687,15 @@ def crawlModule(configPath):
 									if src.getText() == "WORD":
 											item["source"]["word"] = prefix + src["href"].encode('utf-8').strip()
 							retdata.append(item)
+			if module in ['announcements', 'news'] :
+					newsStream = soup.find_all(
+                    'div', {'class': 'announcements_cont'})
+                # print('*********')
+                # print(newsStream)
+                # print('*********')
+                # check length
+ 					handleStream(retdata, lang, newsStream[0], 'stream')
+
 			firstDone = True
 			# html = config['url'][lang]
 			# r=requests.get(html)``
