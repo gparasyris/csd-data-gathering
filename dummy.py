@@ -77,4 +77,4 @@ def emptyFolder(folder):
         except Exception as e:
             print('Failed to delete %s. Reason: %s' % (file_path, e))
 
-crawlModule('configs/people_academic_staff.config.json')
+crawlModule('configs/news.config.json')

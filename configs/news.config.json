@@ -1,0 +1,12 @@
+{
+  "type": "news",
+  "module": "news",
+  "url": {
+    "en": "https://www.csd.uoc.gr/CSD/index.jsp?content=news&lang=en",
+    "gr": "https://www.csd.uoc.gr/CSD/index.jsp?content=news&lang=gr"
+
+  },
+  "output": "candidates/news.json",
+  "outputFileName": "news.json",
+  "parser": "lxml"
+}

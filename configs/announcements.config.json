@@ -1,0 +1,12 @@
+{
+  "type": "announcements",
+  "module": "announcements",
+  "url": {
+    "en": "https://www.csd.uoc.gr/CSD/index.jsp?content=announcements&lang=en",
+    "gr": "https://www.csd.uoc.gr/CSD/index.jsp?content=announcements&lang=gr"
+
+  },
+  "output": "candidates/announcements.json",
+  "outputFileName": "announcements.json",
+  "parser": "lxml"
+}
