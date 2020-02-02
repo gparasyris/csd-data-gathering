@@ -15,6 +15,7 @@ python main.py
 
 #cp -rf releases/ ../../public_html/releases/
 rsync -a --delete releases/ ../../public_html/releases/
+rm -rf candidates/*.json
 
 
 # python bs4-example.py configs/schedule.config.json
