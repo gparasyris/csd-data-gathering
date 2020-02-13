@@ -11,6 +11,7 @@ import os
 import sys
 import io
 import re
+# import uuid
 
 bspath = os.path.join(os.path.dirname(os.path.abspath(
     __file__)), "libraries/backports.functools_lru_cache-1.6.1")
@@ -40,6 +41,7 @@ def json_loads_byteified(json_text):
         ignore_dicts=True
     )
 
+
 def _byteify(data, ignore_dicts=False):
     # if this is a unicode string, return its string representation
     if isinstance(data, unicode):
@@ -65,22 +67,22 @@ def removeNullAndTrim(text):
 		return text
 
 
-
 def handlePerson(retdata, position, person, prefix, lang):
     item = {}
     item['_'.join(['position', lang])] = position
     item['_'.join(['name', lang])] = removeNullAndTrim(person.find(
-        'div', {"class": "small_title"}).getText().encode('utf-8').split('-')[0])#.strip()
+        'div', {"class": "small_title"}).getText().encode('utf-8').split('-')[0])  # .strip()
     description = person.find(
         'div', {"class": "person_text"})
     item['_'.join(['description', lang])] = '' if description is None else removeNullAndTrim(description.getText(
-    ).encode('utf-8'))#.strip()
+    ).encode('utf-8'))  # .strip()
     try:
         try:
           imgDiv = person.find('div', {"class": "person_image"})
           item['img'] = prefix + imgDiv['src']
         except (KeyError, ValueError, AttributeError):
-          item['img'] = prefix + re.search(r'url\((.+)\)', imgDiv['style']).group(1)
+          item['img'] = prefix + \
+              re.search(r'url\((.+)\)', imgDiv['style']).group(1)
     except (KeyError, ValueError, AttributeError):
         item['img'] = ''
     pageContainer = person.find(
@@ -97,7 +99,8 @@ def handlePerson(retdata, position, person, prefix, lang):
             0].getText().encode('utf-8')
         except:
             try:
-                item['email'] = '' if emailDiv is None else emailDiv.getText().encode('utf-8')
+                item['email'] = '' if emailDiv is None else emailDiv.getText().encode(
+                    'utf-8')
             except:
                 item['email'] = ''
     else:
@@ -115,20 +118,23 @@ def handlePerson(retdata, position, person, prefix, lang):
     else:
         retdata.append(item)
 
+
 def handleStream(retdata, lang, stream, iType):
     a_containers = stream.find_all('li')
     for ni in a_containers:
         date = removeNullAndTrim(ni.find('div', {'class': 'ann_date'}
-                       ).getText().encode('utf-8'))#.strip()
+                       ).getText().encode('utf-8'))  # .strip()
         type = 'pinned' if ni.has_attr('pinned_id') else iType
         titleContainer = ni.find('div', {'class': 'ann_title'}).find('a')
         title = None
         newsId = None
         url = ''
         if titleContainer is not None:
-            title = removeNullAndTrim(titleContainer.getText().encode('utf-8'))#.strip()
+            title = removeNullAndTrim(
+                titleContainer.getText().encode('utf-8'))  # .strip()
             try:
-                url = removeNullAndTrim(titleContainer['href'].encode('utf-8'))#.strip()
+                url = removeNullAndTrim(
+                    titleContainer['href'].encode('utf-8'))  # .strip()
             except (KeyError, ValueError, AttributeError):
                 url = ''
             try:
@@ -216,12 +222,17 @@ def crawlModule(configPath):
 
 					for row in rows:
 							idx = 0
-							item = {} 
+							item = {}
 							schedule = {}
 							title = ''
+							code = ''
+							id = row['id'].encode('utf-8').replace('r', '')
 							for td in row.find_all('td'):
 									if idx == 0:
-											title = removeNullAndTrim(td.find('a')['title'].encode('utf-8'))#.strip()
+											title = removeNullAndTrim(
+											    td.find('a')['title'].encode('utf-8'))  # .strip()
+											code = removeNullAndTrim(
+											    td.find('a').getText().split(' ')[0].encode('utf-8')) 
 									else:
 											item['schedule'] = []
 											day = ''
@@ -235,11 +246,30 @@ def crawlModule(configPath):
 													day = 'thu'
 											elif idx == 5:
 													day = 'fr'
-											schedule[day] = removeNullAndTrim(td.getText('td').encode('utf-8'))#.strip()
+											schedule[day] = removeNullAndTrim(
+											    td.getText('td').encode('utf-8'))  # .strip()
 									idx = idx + 1
-							item['schedule'] = schedule
-							item['title'] = title
-							retdata.append(item)
+							item['_'.join(['schedule', lang])]= schedule
+							item['_'.join(['title', lang])] = title
+							item['_'.join(['code', lang])] = code
+							item['id'] = id
+							try:
+									# print('---')
+									# print(item)
+									# print('***')
+									# print(retdata)
+									# print('---')
+									index = [x['id']
+													for x in retdata].index(item['id'])
+									print(index)
+							except ValueError:
+									index = -1
+							if(index != -1):
+									for key in item:
+											retdata[index][key] = item[key]
+							else:
+									retdata.append(item)
+							# retdata.append(item)
 
 	# works
 			if module == "contacts":
@@ -249,44 +279,53 @@ def crawlModule(configPath):
 				faxRegex = re.compile('.*fax-icon.*')
 				facebookRegex = re.compile('.*facebook-icon.*')
 				linkRegex = re.compile('.*link-icon.*')
-				social = [ ]
-				email = { }
-				phone = { }
-				fax = { } 
-				link = { }
-				create_real_email_spans = soup.find_all('span', {"class": "create_real_email"})
+				social = []
+				email = {}
+				phone = {}
+				fax = {}
+				link = {}
+				create_real_email_spans = soup.find_all(
+				    'span', {"class": "create_real_email"})
 				for each in create_real_email_spans:
 					each.extract()
 				elements = soup.find_all('div', {"class": "contact_department_container"})
 				itemsAdded = 0
 				for el in elements:
-					item = { }
-					divs = el.find_all('div',recursive=False)
+					item = {}
+					divs = el.find_all('div', recursive=False)
 					for i in range(len(divs)):
 						if divs[i].has_attr("class") and divs[i]['class'] == ['input_label']:
-							label = removeNullAndTrim(divs[i].getText().encode('utf-8'))#.strip() 
+							label = removeNullAndTrim(divs[i].getText().encode('utf-8'))  # .strip()
 						else:
 							img = divs[i].find('img')
 							if img is not None:
 								if atRegex.match(img['src']):
-									email['title'] = removeNullAndTrim(img['title'].encode('utf8'))#.strip() #.decode('latin1').strip()
-									email['value'] = removeNullAndTrim(divs[i].getText().encode('utf-8'))#.strip()
+									email['title'] = removeNullAndTrim(img['title'].encode(
+									    'utf8'))  # .strip() #.decode('latin1').strip()
+									email['value'] = removeNullAndTrim(
+									    divs[i].getText().encode('utf-8'))  # .strip()
 									item[u'_'.join(['email', lang])] = email
 								elif phoneRegex.match(img['src']):
-									phone['title'] = removeNullAndTrim(img['title'].encode('utf-8'))#.strip()
-									phone['value'] = removeNullAndTrim(divs[i].getText().encode('utf-8'))#.strip()
+									phone['title'] = removeNullAndTrim(
+									    img['title'].encode('utf-8'))  # .strip()
+									phone['value'] = removeNullAndTrim(
+									    divs[i].getText().encode('utf-8'))  # .strip()
 									item[u'_'.join(['phone', lang])] = phone
 								elif faxRegex.match(img['src']):
-									fax['title'] = removeNullAndTrim(img['title'].encode('utf-8'))#.strip()
-									fax['value'] = removeNullAndTrim(divs[i].getText().encode('utf-8'))#.strip()
+									fax['title'] = removeNullAndTrim(
+									    img['title'].encode('utf-8'))  # .strip()
+									fax['value'] = removeNullAndTrim(
+									    divs[i].getText().encode('utf-8'))  # .strip()
 									item[u'_'.join(['fax', lang])] = fax
 								elif linkRegex.match(img['src']):
-									link['title'] = removeNullAndTrim(img['title'].encode('utf-8'))#.strip()
-									link['value'] = removeNullAndTrim(divs[i].find('a')["href"].encode('utf-8'))#.strip()
+									link['title'] = removeNullAndTrim(
+									    img['title'].encode('utf-8'))  # .strip()
+									link['value'] = removeNullAndTrim(divs[i].find(
+									    'a')["href"].encode('utf-8'))  # .strip()
 									item[u'_'.join(['link', lang])] = link
 								elif facebookRegex.match(img['src']):
 									break
-						if divs[i].has_attr("class") and divs[i]['class'] == ['field_separator']: 
+						if divs[i].has_attr("class") and divs[i]['class'] == ['field_separator']:
 							if canAdd == True:
 								item[u'_'.join(['label', lang])] = label
 								if(firstDone):
@@ -295,11 +334,11 @@ def crawlModule(configPath):
 								else:
 									retdata.append(item)
 								itemsAdded = itemsAdded + 1
-								email = { }
-								phone = { }
-								fax = { } 
-								link = { }
-								item = { }
+								email = {}
+								phone = {}
+								fax = {}
+								link = {}
+								item = {}
 								label = ''
 							else:
 								canAdd = True
@@ -318,7 +357,7 @@ def crawlModule(configPath):
 									for i in range(len(matrices)):
 											item = {}
 											semesterTitle = removeNullAndTrim(titleArray[i].getText().encode(
-													'utf-8'))#.strip()
+													'utf-8'))  # .strip()
 											item[u'_'.join(['title', lang])] = semesterTitle
 											item[u'_'.join(['courses', lang])] = []
 											headers = []
@@ -345,31 +384,31 @@ def crawlModule(configPath):
 					course_tables = soup.find_all(
 							'tr', {'id': re.compile(r'course[0-9]+')})
 					headersMap = {}
-					headersMap["Area"]="area_name"
-					headersMap["Code"]="code"
-					headersMap["Course email"] ="email"
+					headersMap["Area"] = "area_name"
+					headersMap["Code"] = "code"
+					headersMap["Course email"] = "email"
 					headersMap["Course website"] = "url"
-					headersMap["Description"]= "description"
-					headersMap["ECTS"]="ects"
-					headersMap["Name"]="name"
-					headersMap["Program"]="program"
-					headersMap["Prerequisites"]="prerequisites"
-					headersMap["Suggested"]="suggested"
-					headersMap["winter semester"]="winter_semester"
-					headersMap["spring semester"]="spring_semester"
+					headersMap["Description"] = "description"
+					headersMap["ECTS"] = "ects"
+					headersMap["Name"] = "name"
+					headersMap["Program"] = "program"
+					headersMap["Prerequisites"] = "prerequisites"
+					headersMap["Suggested"] = "suggested"
+					headersMap["winter semester"] = "winter_semester"
+					headersMap["spring semester"] = "spring_semester"
 
-					headersMap["Περιοχή"]="area_name"
-					headersMap["Κωδικός"]="code"
-					headersMap["Email μαθήματος"] ="email"
+					headersMap["Περιοχή"] = "area_name"
+					headersMap["Κωδικός"] = "code"
+					headersMap["Email μαθήματος"] = "email"
 					headersMap["Ιστοσελίδα μαθήματος"] = "url"
-					headersMap["Περιγραφή"]= "description"
-					headersMap["ECTS"]="ects"
-					headersMap["Όνομα"]="name"
-					headersMap["Πρόγραμμα"]="program"
-					headersMap["Προαπαιτούμενα"]="prerequisites"
-					headersMap["Προτεινόμενα"]="suggested"
-					headersMap["χειμερινό εξάμηνο"]="winter_semester"
-					headersMap["εαρινό εξάμηνο"]="spring_semester"
+					headersMap["Περιγραφή"] = "description"
+					headersMap["ECTS"] = "ects"
+					headersMap["Όνομα"] = "name"
+					headersMap["Πρόγραμμα"] = "program"
+					headersMap["Προαπαιτούμενα"] = "prerequisites"
+					headersMap["Προτεινόμενα"] = "suggested"
+					headersMap["χειμερινό εξάμηνο"] = "winter_semester"
+					headersMap["εαρινό εξάμηνο"] = "spring_semester"
 					for table in course_tables:
 							a_containers = table.find_all('a')
 							for ci in range(len(a_containers)):
@@ -378,7 +417,8 @@ def crawlModule(configPath):
 									course_response = course_request.content.decode('utf-8').replace("&nbsp;", " NULL ").replace("\\u00A0",
 																																																							" ").replace(u"\u0391", "A").replace(u"\u0397", "H").replace("<br />", " ").replace("<br/>", " ").encode('utf-8')
 									course_soup = BeautifulSoup(course_response, "html.parser")
-									create_real_email_spans = course_soup.find_all('span', {"class": "create_real_email"})
+									create_real_email_spans = course_soup.find_all(
+									    'span', {"class": "create_real_email"})
 									for each in create_real_email_spans:
 										each  .extract()
 									course_details_div = course_soup.find(
@@ -395,7 +435,8 @@ def crawlModule(configPath):
 													shouldAddFields = True
 											elif shouldAddFields == True:
 													if divs[i]['class'] == ['input_label']:
-															prevKey = removeNullAndTrim(divs[i].getText().encode('utf-8'))#.strip()
+															prevKey = removeNullAndTrim(
+															    divs[i].getText().encode('utf-8'))  # .strip()
 													elif prevKey != '':
 															if prevKey in headersMap:
 																prefix = headersMap[prevKey]
@@ -404,31 +445,38 @@ def crawlModule(configPath):
 																	candValues = []
 																	single = {}
 																	item[prefix] = []
-																	if (len(paragraphs)  == 2):
+																	if (len(paragraphs) == 2):
 																		for ci in range(len(paragraphs)):
-																			ciArray = re.split(': |\n',removeNullAndTrim(paragraphs[ci].getText().encode('utf-8')))
-																			single['label'] = headersMap[ciArray[0]] #if ciArray[0] in headersMap else ''
+																			ciArray = re.split(': |\n', removeNullAndTrim(
+																			    paragraphs[ci].getText().encode('utf-8')))
+																			# if ciArray[0] in headersMap else ''
+																			single['label'] = headersMap[ciArray[0]]
 																			single['value'] = ciArray[1]
 																			item[prefix].append(single)
 																			single = {}
 																	else:
-																		candValues = re.split(': |\n',removeNullAndTrim(divs[i].getText().encode('utf-8')))
+																		candValues = re.split(': |\n', removeNullAndTrim(
+																		    divs[i].getText().encode('utf-8')))
 																		if(len(candValues) > 1):
 																			for si in range(len(candValues) - 1):
-																				single['label'] = headersMap[candValues[si]] if candValues[si] in headersMap else ''
+																				single['label'] = headersMap[candValues[si]
+																				    ] if candValues[si] in headersMap else ''
 																				single['value'] = candValues[si+1]
 																				item[prefix].append(single)
 																				single = {}
-																				si = si +1
+																				si = si + 1
 																		else:
 																			single['label'] = ''
 																			single['value'] = candValues[0]
 																			item[prefix].append(single)
 																			single = {}
 																else:
-																  actualKey = prefix if prefix in ["ects"] else '_'.join([prefix, lang])
-																  value = divs[i].getText().encode('utf-8').replace("NULL ", "").replace("\r\n\n", "").replace("\r\n", "").replace("\r\n\t\n", " ").replace("\n", " ").strip()
-																  item[actualKey] = value
+																	if(headersMap[prevKey] == 'area_name'):
+																		print(divs[i])
+
+																	actualKey = prefix if prefix in ["ects"] else '_'.join([prefix, lang])
+																	value = divs[i].getText().encode('utf-8').replace("NULL ", "").replace("\r\n\n", "").replace("\r\n", "").replace("\r\n\t\n", " ").replace("\n", " ").strip()
+																	item[actualKey] = value
 
 															prevKey = ''
 									index = 0

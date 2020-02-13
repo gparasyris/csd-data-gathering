@@ -2,7 +2,8 @@
   "type": "schedule",
   "module": "schedule",
   "url": {
-    "gr": "https://www.csd.uoc.gr/CSD/index.jsp?content=time_schedule&lang=gr"
+    "gr": "https://www.csd.uoc.gr/CSD/index.jsp?content=time_schedule&lang=gr",
+    "en": "https://www.csd.uoc.gr/CSD/index.jsp?content=time_schedule&lang=en"
   },
   "output": "candidates/schedule.json",
   "outputFileName": "schedule.json"
