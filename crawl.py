@@ -150,6 +150,8 @@ def handleStream(retdata, lang, stream, iType):
 
             descriptionHtml = news_soup.find(
                 'div', {'class': 'announcement_body'})
+            for img in descriptionHtml("img"):
+                img.decompose()
             description = removeNullAndTrim(str(descriptionHtml).decode(
                 'utf-8').encode(
                 'utf-8')) if descriptionHtml is not None else ''

@@ -2,7 +2,9 @@
 
 # cd /home/grads/parasyris/thesis/csd-static-data-sources
 
-cd /home/grads/parasyris/thesis/csd-static-data-sources
+# cd /home/grads/parasyris/thesis/csd-static-data-sources
+
+cd /home/users/guest/groups/mobileapp/csd-data-gathering
 
 python main.py
 
