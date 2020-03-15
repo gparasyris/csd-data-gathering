@@ -16,7 +16,7 @@ python main.py
 # cp candidates/time_schedule.json ../../public_html/generated/"people-$(date +%F_%R).json"
 
 #cp -rf releases/ ../../public_html/releases/
-rsync -a --delete releases/ ../../public_html/releases/
+rsync -a --delete releases/ ../public_html/releases/
 rm -rf candidates/*.json
 
 
