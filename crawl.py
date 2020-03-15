@@ -23,6 +23,11 @@ bspath = os.path.join(os.path.dirname(
     os.path.abspath(__file__)), "libraries/soupsieve-1.9.5")
 sys.path.append(bspath)
 
+def item_containing_substring(the_list, substring):
+    for i, s in enumerate(the_list):
+        if substring in s:
+              return s
+    return ''
 
 def get_param_from_url(url, param_name):
     return [i.split("=")[-1] for i in url.split("?", 1)[-1].split("&") if i.startswith(param_name + "=")][0]
@@ -263,7 +268,7 @@ def crawlModule(configPath):
 									# print('---')
 									index = [x['id']
 													for x in retdata].index(item['id'])
-									print(index)
+									# print(index)
 							except ValueError:
 									index = -1
 							if(index != -1):
@@ -383,10 +388,19 @@ def crawlModule(configPath):
 													retdata.append(item)
 	# fails
 			if module == "courses":
+					areas_select = soup.find(
+							'select', {'id': 'area_select'})
+					areaSelection = []
+					# print(areas_select)
+					for option in areas_select.find_all("option"):
+						areaSelection.append(removeNullAndTrim(option.getText().encode('utf-8')))
+
+					# print(areaSelection)
 					course_tables = soup.find_all(
 							'tr', {'id': re.compile(r'course[0-9]+')})
 					headersMap = {}
 					headersMap["Area"] = "area_name"
+					headersMap["Areas"] = "area_name"
 					headersMap["Code"] = "code"
 					headersMap["Course email"] = "email"
 					headersMap["Course website"] = "url"
@@ -400,6 +414,7 @@ def crawlModule(configPath):
 					headersMap["spring semester"] = "spring_semester"
 
 					headersMap["Περιοχή"] = "area_name"
+					headersMap["Περιοχές"] = "area_name"
 					headersMap["Κωδικός"] = "code"
 					headersMap["Email μαθήματος"] = "email"
 					headersMap["Ιστοσελίδα μαθήματος"] = "url"
@@ -474,11 +489,30 @@ def crawlModule(configPath):
 																			single = {}
 																else:
 																	if(headersMap[prevKey] == 'area_name'):
-																		print(divs[i])
+																		# if "code_en" in item:
+																		# 	print(item["code_en"])
+																		# print()
+																		actualKey = prefix if prefix in ["ects"] else '_'.join([prefix, lang])
+																		area_divs = divs[i].find_all('div')
+																		for i in range(len(area_divs)):
+																			# print(i)
+																			# print(item)
+																			# print(actualKey)
+																			if(actualKey not in item):
+																				item[actualKey] = []
+																			# print(item)
+																			value = area_divs[i].getText().encode('utf-8').replace("NULL ", "").replace("\r\n\n", "").replace("\r\n", "").replace("\r\n\t\n", " ").replace("\n", " ").strip()
+																			item[actualKey].append(item_containing_substring(areaSelection, value))
 
-																	actualKey = prefix if prefix in ["ects"] else '_'.join([prefix, lang])
-																	value = divs[i].getText().encode('utf-8').replace("NULL ", "").replace("\r\n\n", "").replace("\r\n", "").replace("\r\n\t\n", " ").replace("\n", " ").strip()
-																	item[actualKey] = value
+																		# if(len(divs[i].find_all('div'))):
+																		# 	value = divs[i].getText().encode('utf-8').replace("NULL ", "").replace("\r\n\n", "").replace("\r\n", "").replace("\r\n\t\n", " ").replace("\n", " ").strip()
+																		# 	# item[actualKey] = value
+																		# 	item[actualKey].append(item)
+																		
+																	else :
+																		actualKey = prefix if prefix in ["ects"] else '_'.join([prefix, lang])
+																		value = divs[i].getText().encode('utf-8').replace("NULL ", "").replace("\r\n\n", "").replace("\r\n", "").replace("\r\n\t\n", " ").replace("\n", " ").strip()
+																		item[actualKey] = value
 
 															prevKey = ''
 									index = 0

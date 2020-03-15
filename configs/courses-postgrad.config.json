@@ -3,9 +3,9 @@
   "module": "courses",
   "url": {
     "en": "https://www.csd.uoc.gr/CSD/index.jsp?content=pg_courses_catalog&openmenu=demoAcc4&lang=en",
-    "gr": "https://www.csd.uoc.gr/CSD/index.jsp?content=pg_courses_catalog&openmenu=demoAcc4&lang=gr#"
+    "gr": "https://www.csd.uoc.gr/CSD/index.jsp?content=pg_courses_catalog&openmenu=demoAcc4&lang=gr"
   },
-  "output": "candidates/courses1.json",
-  "outputFileName": "courses1.json",
+  "output": "candidates/courses.json",
+  "outputFileName": "courses.json",
   "target": "pgrads_courses_table"
 }
